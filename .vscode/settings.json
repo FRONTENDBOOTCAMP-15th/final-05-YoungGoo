@@ -1,0 +1,32 @@
+{
+  // 저장 시 자동 포맷
+  "editor.formatOnSave": true,
+
+  // 기본 포맷터를 Prettier로 고정
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // JS / TS / React 파일에도 적용
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // 저장 시 ESLint로 자동 수정 가능한 것들 fix
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // 프로젝트에 설치된 prettier 사용
+  "prettier.prettierPath": "./node_modules/prettier",
+
+  // ESLint가 관리하는 언어
+  "eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"]
+}

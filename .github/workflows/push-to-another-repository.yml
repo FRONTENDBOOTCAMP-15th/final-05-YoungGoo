@@ -28,7 +28,7 @@ jobs:
             name: REPO_JSJ
             token: TOKEN_JSJ
             email: EMAIL_JSJ
-            
+
     steps:
       - uses: actions/checkout@v2
       - name: Install mustache (to update the date)
