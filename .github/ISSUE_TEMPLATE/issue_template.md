@@ -1,8 +1,10 @@
+---
 name: Issue template
 about: 이슈 템플릿 작성
 title: ''
 labels: ''
 assignees: ''
+---
 
 ## 작업 내용
 
