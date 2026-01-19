@@ -1,3 +1,9 @@
+name: Issue template
+about: 이슈 템플릿 작성
+title: ''
+labels: ''
+assignees: ''
+
 ## 작업 내용
 
 - 로그인 페이지 구현 (예제 삭제)
