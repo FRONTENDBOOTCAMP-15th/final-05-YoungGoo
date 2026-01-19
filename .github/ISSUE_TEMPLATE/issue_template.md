@@ -1,7 +1,7 @@
 ---
 name: Issue Template
 about: 작업을 위한 이슈 생성
-title: '[feature] 작업할 내용에 대한 제목을 작성해주세요.'
+title: '[타입] 작업할 내용에 대한 제목을 작성해주세요.'
 labels: ''
 assignees: ''
 ---
