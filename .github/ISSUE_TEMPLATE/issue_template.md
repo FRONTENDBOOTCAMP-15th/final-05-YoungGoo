@@ -6,6 +6,16 @@ labels: ''
 assignees: ''
 ---
 
+## 타입 (보고 타이틀에 추가하면 삭제)
+
+- [feature]
+- [fix]
+- [refactor]
+- [style]
+- [docs]
+- [chore]
+- [test]
+
 ## 작업 내용
 
 - 로그인 페이지 구현 (예제 삭제)
