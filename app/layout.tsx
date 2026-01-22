@@ -10,9 +10,10 @@ export default function RootLayout({
   return (
     <html lang="ko" className={pretendard.variable}>
       <body>
-        {children}
-
-        <ul className="flex gap-6 mt-2">
+        <ul className="flex gap-4 sticky top-0">
+          <li>
+            <Link href="/">메인 페이지</Link>
+          </li>
           <li>
             <Link href="/survey">설문 페이지</Link>
           </li>
@@ -32,6 +33,8 @@ export default function RootLayout({
             <Link href="/signup">회원가입</Link>
           </li>
         </ul>
+
+        {children}
       </body>
     </html>
   );
