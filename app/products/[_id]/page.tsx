@@ -1,3 +1,4 @@
+import ProductInfoTabs from '@/components/products/ProductInfoTabs';
 import ProductSummary from '@/components/products/ProductSummary';
 import { productDetailMock } from '@/mock/productDetail.mock';
 
@@ -16,16 +17,7 @@ export default function ProductDetailPage() {
           {/* 상품 요약 영역 */}
           <ProductSummary name={product.name} summary={product.summary} price={product.price} brand={product.brand} rating={product.rating} reviewCount={product.reviewCount} shippingLabel={product.shippingLabel} imageUrl={product.imageUrl} tags={product.tags} />
           {/* 탭 영역 */}
-          <div className="rounded-lg bg-yg-white p-4 shadow">
-            <p className="text-sm text-yg-darkgray">탭 UI 영역</p>
-            <div className="mt-3 flex gap-4">
-              <button className="font-semibold text-yg-primary">주요 기능</button>
-              <button className="text-yg-gray">영양 정보</button>
-              <button className="text-yg-gray">섭취 방법</button>
-              <button className="text-yg-gray">주의사항</button>
-            </div>
-          </div>
-
+          <ProductInfoTabs active="features" />
           {/* 상세 섹션 영역 */}
           <div className="rounded-lg bg-yg-white p-6 shadow">
             <p className="mb-2 text-sm text-yg-darkgray">상세 정보 섹션 영역</p>
