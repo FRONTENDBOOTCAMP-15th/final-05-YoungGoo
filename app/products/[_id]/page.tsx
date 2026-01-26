@@ -1,3 +1,4 @@
+import ProductSummary from '@/components/products/ProductSummary';
 import { productDetailMock } from '@/mock/productDetail.mock';
 
 export default function ProductDetailPage() {
@@ -13,11 +14,7 @@ export default function ProductDetailPage() {
         {/* 좌측 영역 */}
         <div className="col-span-8 space-y-6">
           {/* 상품 요약 영역 */}
-          <div className="rounded-lg bg-yg-white p-6 shadow">
-            <p className="text-sm text-yg-darkgray">상품 요약 영역</p>
-            <p className="mt-2 text-lg font-semibold">{product.summary}</p>
-          </div>
-
+          <ProductSummary name={product.name} summary={product.summary} price={product.price} brand={product.brand} rating={product.rating} reviewCount={product.reviewCount} shippingLabel={product.shippingLabel} imageUrl={product.imageUrl} tags={product.tags} />
           {/* 탭 영역 */}
           <div className="rounded-lg bg-yg-white p-4 shadow">
             <p className="text-sm text-yg-darkgray">탭 UI 영역</p>
