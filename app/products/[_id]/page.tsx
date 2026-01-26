@@ -1,3 +1,4 @@
+import ProductSidePurchaseCard from '@/components/products/ProductSidePurchaseCard';
 import ProductInfoSection from '@/components/products/ProductInfoSection';
 import ProductInfoTabs from '@/components/products/ProductInfoTabs';
 import ProductSummary from '@/components/products/ProductSummary';
@@ -24,13 +25,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* 우측 구매 카드 영역 */}
-        <aside className="col-span-4">
-          <div className="sticky top-20 rounded-lg bg-yg-white p-6 shadow">
-            <p className="text-sm text-yg-darkgray">구매 카드 영역</p>
-            <p className="mt-2 text-xl font-bold text-yg-black">{product.price.toLocaleString()}원</p>
-            <button className="mt-4 w-full rounded-md bg-yg-primary py-3 text-white">구매하기</button>
-          </div>
-        </aside>
+        <ProductSidePurchaseCard price={product.price} shippingLabel={product.shippingLabel} />
       </section>
     </main>
   );
