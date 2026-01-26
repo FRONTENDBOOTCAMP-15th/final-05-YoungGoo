@@ -1,3 +1,4 @@
+import ProductInfoSection from '@/components/products/ProductInfoSection';
 import ProductInfoTabs from '@/components/products/ProductInfoTabs';
 import ProductSummary from '@/components/products/ProductSummary';
 import { productDetailMock } from '@/mock/productDetail.mock';
@@ -19,14 +20,7 @@ export default function ProductDetailPage() {
           {/* 탭 영역 */}
           <ProductInfoTabs active="features" />
           {/* 상세 섹션 영역 */}
-          <div className="rounded-lg bg-yg-white p-6 shadow">
-            <p className="mb-2 text-sm text-yg-darkgray">상세 정보 섹션 영역</p>
-            <ul className="list-disc pl-5 text-yg-black">
-              {product.features.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
+          <ProductInfoSection features={product.features} nutritionFacts={product.nutritionFacts} intake={product.intake} cautions={product.cautions} />
         </div>
 
         {/* 우측 구매 카드 영역 */}
