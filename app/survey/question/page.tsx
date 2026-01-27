@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 
-import SurveyTitle from '@/app/survey/components/SurveyTitle';
-import ProgressBar from '@/app/survey/components/ProgressBar';
-import Question from '@/app/survey/components/Question';
-import QuestionRenderer from '@/app/survey/components/QuestionRenderer';
-import BottomNav from '@/app/survey/components/Nav';
+import SurveyTitle from '@/components/survey/SurveyTitle';
+import ProgressBar from '@/components/survey/ProgressBar';
+import Question from '@/components/survey/Question';
+import QuestionRenderer from '@/components/survey/QuestionRenderer';
+import BottomNav from '@/components/survey/Nav';
 
 import { QUESTIONS } from '@/app/survey/data/Questions';
-import PillIcon from '@/app/survey/components/icons/pill';
+import PillIcon from '@/components/survey/icons/pill';
 
 type AnswerMap = Record<string, unknown>;
 

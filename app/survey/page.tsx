@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
-import SurveyTitle from '@/app/survey/components/SurveyTitle';
-import ProgressBar from '@/app/survey/components/ProgressBar';
+import SurveyTitle from '@/components/survey/SurveyTitle';
+import ProgressBar from '@/components/survey/ProgressBar';
 
 export default function SurveyStartPage() {
   const router = useRouter();
