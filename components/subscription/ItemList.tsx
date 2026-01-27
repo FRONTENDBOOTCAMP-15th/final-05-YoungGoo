@@ -17,15 +17,14 @@ interface ItemListProps {
 
 export default function ItemList({ products, onToggleCheck, onIncrease, onDecrease }: ItemListProps) {
   return (
-    <section className="flex flex-col gap-12 p-10 shadow-lg rounded-[50px] border border-yg-primary">
-      <h1 className="text-xl font-bold">주문 상품 정보</h1>
-      <table className="table-fixed border-separate border-spacing-y-6">
+    <>
+      <table className="w-full table-fixed border-separate border-spacing-y-6">
         <thead>
           <tr>
-            <th>구매</th>
-            <th className="w-90">제품명</th>
-            <th className="w-20">수량</th>
-            <th>가격</th>
+            <th className='w-8'>구매</th>
+            <th className="w-97">제품명</th>
+            <th className="w-25">수량</th>
+            <th className='w-30'>가격</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +39,6 @@ export default function ItemList({ products, onToggleCheck, onIncrease, onDecrea
           ))}
         </tbody>
       </table>
-    </section>
+    </>
   );
 }
