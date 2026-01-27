@@ -1,38 +1,23 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import SurveyShell from '@/app/survey/components/SurveyShell';
-import ProgressBar from '@/app/survey/components/ProgressBar';
-
-export default function SurveyStartPage() {
-  const router = useRouter();
-
+export default function Home() {
   return (
-    <SurveyShell title="설문 페이지">
-      <div className="flex flex-col items-center justify-center gap-8 py-12">
-        {/* ProgressBar (0%) */}
-        <div className="w-full max-w-xl">
-          <ProgressBar value={0} />
+    <main>
+      <section id="visual">
+        <div className="flex flex-col justify-center items-baseline gap-5 h-120 px-4 xl:w-300 xl:mx-auto xl:px-0">
+          <h1 className="font-bold text-4xl/[1.4]">
+            당신과 쭉 함께하는 <br />
+            맞춤 영양제 구독
+          </h1>
+          <Link href="/survey" className="inline-block px-10 py-3 font-medium text-xl text-white bg-yg-primary rounded-full">
+            AI 추천받기
+          </Link>
         </div>
+      </section>
 
-        {/* 타이틀 */}
-        <h1 className="text-2xl font-bold text-[var(--color-yg-black)]">AI 맞춤 영양제 추천</h1>
-
-        {/* 알약 아이콘 */}
-        <img src="/icons/survey/pill.png" alt="알약 아이콘" width={48} height={48} />
-
-        {/* 설명 문구 */}
-        <p className="max-w-sm text-center text-sm leading-6 text-[var(--color-yg-darkgray)]">
-          간단한 설문조사를 통해
-          <br />
-          AI 맞춤 추천을 받고 정기구독을 시작해보세요
-        </p>
-
-        {/* 시작하기 버튼 */}
-        <button type="button" className="mt-6 w-full max-w-md rounded-full bg-[var(--color-yg-primary)] py-4 text-base font-semibold text-white transition hover:opacity-90" onClick={() => router.push('/survey/questions')}>
-          시작하기
-        </button>
-      </div>
-    </SurveyShell>
+      <section id="service" className="bg-gray-200">
+        <div className="px-4 py-25 h-120 xl:w-300 xl:mx-auto xl:px-0">
+          <h2 className="font-bold text-[28px]">서비스</h2>
+        </div>
+      </section>
+    </main>
   );
 }
