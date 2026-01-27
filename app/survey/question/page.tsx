@@ -10,10 +10,12 @@ import BottomNav from '@/components/survey/Nav';
 
 import { QUESTIONS } from '@/app/survey/data/Questions';
 import PillIcon from '@/components/survey/icons/pill';
+import { useRouter } from 'next/navigation';
 
 type AnswerMap = Record<string, unknown>;
 
 export default function SurveyQuestionsPage() {
+  const router = useRouter();
   // 몇 번째 질문인지
   const [step, setStep] = useState(0);
 
@@ -59,8 +61,7 @@ export default function SurveyQuestionsPage() {
   const handlePrimary = () => {
     if (step === total - 1) {
       console.log('SUBMIT answers:', answers);
-      // TODO: 마지막 질문이면 결과 페이지로 이동
-      // router.push('/survey/result');
+      router.push('/survey/result');
       return;
     }
 
