@@ -4,6 +4,7 @@ export interface AuthInputProps {
   name: string;
   type?: 'text' | 'email' | 'password';
   placeholder?: string;
+  className?: string;
   error?: string | null;
 }
 
@@ -20,6 +21,7 @@ export const variantClasses = {
   primary: 'text-white bg-yg-primary',
   baseSecondary: 'text-yg-secondary bg-yg-white outline-1 outline-yg-secondary',
   secondary: 'text-white bg-yg-secondary',
+  disabled: 'text-white bg-yg-gray',
 } as const;
 
 type ButtonSize = keyof typeof sizeClasses;
