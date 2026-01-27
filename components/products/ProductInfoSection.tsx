@@ -15,7 +15,7 @@ export default function ProductInfoSection({ features, nutritionFacts, intake, c
   return (
     <section className="space-y-10">
       {/* 주요 기능 */}
-      <div className="rounded-lg bg-yg-white p-6 shadow">
+      <div id="features" className="rounded-lg bg-yg-white p-6 shadow">
         <h2 className="mb-4 text-lg font-bold text-yg-black">주요 기능</h2>
         <ul className="list-disc space-y-2 pl-5 text-yg-black">
           {features.map((item, idx) => (
@@ -25,7 +25,7 @@ export default function ProductInfoSection({ features, nutritionFacts, intake, c
       </div>
 
       {/* 영양 정보 */}
-      <div className="rounded-lg bg-yg-white p-6 shadow">
+      <div id="nutrition" className="rounded-lg bg-yg-white p-6 shadow">
         <h2 className="mb-4 text-lg font-bold text-yg-black">영양 정보</h2>
         <table className="w-full border-collapse text-sm">
           <thead>
@@ -48,13 +48,13 @@ export default function ProductInfoSection({ features, nutritionFacts, intake, c
       </div>
 
       {/* 섭취 방법 */}
-      <div className="rounded-lg bg-yg-white p-6 shadow">
+      <div id="intake" className="rounded-lg bg-yg-white p-6 shadow">
         <h2 className="mb-3 text-lg font-bold text-yg-black">섭취 방법</h2>
         <p className="text-yg-black">{intake}</p>
       </div>
 
       {/* 주의사항 */}
-      <div className="rounded-lg border border-yg-warning bg-white p-6">
+      <div id="cautions" className="rounded-lg border border-yg-warning bg-white p-6">
         <h2 className="mb-3 text-lg font-bold text-yg-warning">주의사항</h2>
         <ul className="list-disc space-y-2 pl-5 text-yg-black">
           {cautions.map((item, idx) => (
