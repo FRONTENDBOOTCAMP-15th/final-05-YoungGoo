@@ -23,7 +23,7 @@ export default function ListItem({ product, onToggleCheck, onIncrease, onDecreas
           onChange={() => onToggleCheck(product.id)}
         />
       </td>
-      <td className="px-3 text-center">
+      <td className="px-3">
         <div className="flex items-center">
           <div className="shrink-0 w-15 h-15 mr-5 bg-yg-secondary"></div>
           <h3 className="text-md">{product.name}</h3>

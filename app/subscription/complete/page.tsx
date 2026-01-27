@@ -1,7 +1,7 @@
 'use client';
 import '@/app/globals.css';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Product {
   id: number;
@@ -46,21 +46,11 @@ const getPaymentInfo = (): PaymentInfo | null => {
 };
 
 export default function PaymentComplete() {
-  const router = useRouter();
   const [paymentInfo] = useState<PaymentInfo | null>(getPaymentInfo);
 
   const handleGoHome = () => {
     // sessionStorage 정리
     sessionStorage.removeItem('paymentInfo');
-    // 홈으로 이동 (또는 원하는 페이지로)
-    router.push('/');
-  };
-
-  const handleViewOrders = () => {
-    // sessionStorage 정리
-    sessionStorage.removeItem('paymentInfo');
-    // 주문 내역 페이지로 이동
-    router.push('/orders');
   };
 
   if (!paymentInfo) {
@@ -72,7 +62,7 @@ export default function PaymentComplete() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-yg-white overflow-x-hidden flex items-center justify-center py-10">
+    <div className="w-full min-h-screen bg-white overflow-x-hidden flex items-center justify-center py-10">
       <div className="max-w-3xl w-full px-4">
         <div className="p-10 shadow-lg rounded-[50px] border border-yg-primary bg-white">
           {/* 완료 아이콘 */}
@@ -91,7 +81,7 @@ export default function PaymentComplete() {
           </p>
 
           {/* 결제 정보 요약 */}
-          <div className="bg-yg-white border border-yg-primary shadow-lg rounded-[50px] p-8 mb-6">
+          <div className="bg-yg-white shadow-lg rounded-[50px] p-8 my-8">
             <h2 className="font-bold text-lg mb-4">결제 정보</h2>
             <div className="space-y-3">
               <div className="flex justify-between">
@@ -108,7 +98,7 @@ export default function PaymentComplete() {
           </div>
 
           {/* 주문 상품 */}
-          <div className="bg-yg-white border border-yg-primary shadow-lg rounded-[50px] p-8 mb-6">
+          <div className="bg-yg-white shadow-lg rounded-[50px] p-8 my-8">
             <h2 className="font-bold text-lg mb-4">주문 상품</h2>
             <div className="space-y-3">
               {paymentInfo.products.map((product) => (
@@ -126,7 +116,7 @@ export default function PaymentComplete() {
           </div>
 
           {/* 배송 정보 */}
-          <div className="bg-yg-white border border-yg-primary shadow-lg rounded-[50px] p-8 mb-6">
+          <div className="bg-yg-white shadow-lg rounded-[50px] p-8 my-8">
             <h2 className="font-bold text-lg mb-4">배송 정보</h2>
             <div className="space-y-2">
               <p className="font-semibold">{paymentInfo.shippingInfo.name}</p>
@@ -137,19 +127,14 @@ export default function PaymentComplete() {
           </div>
 
           {/* 버튼 */}
-          <div className="flex gap-4">
-            <button
+          <div className='className="w-full bg-yg-primary rounded-[50px] text-yg-white font-semibold py-3 shadow-lg hover:bg-opacity-90 transition'>
+            <Link
+              href="/"
               onClick={handleGoHome}
-              className="flex-1 bg-yg-secondary rounded-[50px] text-yg-white font-semibold py-3 shadow-lg hover:bg-opacity-90 transition"
+              className="w-full block text-center"
             >
               홈으로
-            </button>
-            <button
-              onClick={handleViewOrders}
-              className="flex-1 bg-yg-primary rounded-[50px] text-yg-white font-semibold py-3 shadow-lg hover:bg-opacity-90 transition"
-            >
-              주문 내역 보기
-            </button>
+          </Link>
           </div>
         </div>
       </div>
