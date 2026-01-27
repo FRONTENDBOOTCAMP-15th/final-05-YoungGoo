@@ -1,18 +1,11 @@
+// app/survey/layout.tsx
 import type { ReactNode } from 'react';
 
-type SurveyShellProps = {
-  title?: string;
-  children: ReactNode;
-};
-
-export default function SurveyShell({ title = '설문 페이지', children }: SurveyShellProps) {
+export default function SurveyLayout({ children }: { children: ReactNode }) {
   return (
     <main className="min-h-dvh bg-[var(--color-yg-white)]">
-      {/* 전체 페이지 폭 max-w-6xl*/}
+      {/* 전체 페이지 폭 */}
       <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
-        {/* 상단 라벨 */}
-        <div className="pt-6 lg:pt-8 text-center text-sm font-medium text-[var(--color-yg-gray)]">{title}</div>
-
         {/* 내부 설문 컨텐츠 폭 */}
         <section
           className="
@@ -21,8 +14,8 @@ export default function SurveyShell({ title = '설문 페이지', children }: Su
             min-h-[calc(100dvh-56px)]
             w-full
             max-w-[640px]
-            lg:max-w-[720px]
             flex-col
+            lg:max-w-[720px]
           "
         >
           <div className="flex flex-1 flex-col justify-center py-10 lg:py-12">

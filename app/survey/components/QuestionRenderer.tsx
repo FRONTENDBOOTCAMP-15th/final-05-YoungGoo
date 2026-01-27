@@ -1,7 +1,7 @@
-import BasicInfo from '../questions/BasicInfo';
-import Category from '../questions/Category';
-import MultiChoice from '../questions/MultiChoice';
-import ScaleChoice from '../questions/ScaleChoice';
+import BasicInfo from './questions/BasicInfo';
+import Category from './questions/Category';
+import MultiChoice from './questions/MultiChoice';
+import ScaleChoice from './questions/ScaleChoice';
 import type { QuestionData } from '../data/Questions';
 
 // BasicInfo 값 타입

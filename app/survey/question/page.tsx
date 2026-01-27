@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import SurveyShell from '@/app/survey/components/SurveyShell';
+import SurveyTitle from '@/app/survey/components/SurveyTitle';
 import ProgressBar from '@/app/survey/components/ProgressBar';
 import Question from '@/app/survey/components/Question';
 import QuestionRenderer from '@/app/survey/components/QuestionRenderer';
@@ -12,6 +12,7 @@ import { QUESTIONS } from '@/app/survey/data/Questions';
 import PillIcon from '@/app/survey/components/icons/pill';
 
 type AnswerMap = Record<string, unknown>;
+
 export default function SurveyQuestionsPage() {
   // 몇 번째 질문인지
   const [step, setStep] = useState(0);
@@ -28,9 +29,9 @@ export default function SurveyQuestionsPage() {
   // 질문 데이터가 없을 경우
   if (!q) {
     return (
-      <SurveyShell title="설문 페이지">
+      <SurveyTitle title="설문 페이지">
         <div className="py-16 text-center text-sm text-[var(--color-yg-darkgray)]">질문을 불러오지 못했어요. 다시 시도해주세요.</div>
-      </SurveyShell>
+      </SurveyTitle>
     );
   }
 
@@ -58,6 +59,8 @@ export default function SurveyQuestionsPage() {
   const handlePrimary = () => {
     if (step === total - 1) {
       console.log('SUBMIT answers:', answers);
+      // TODO: 마지막 질문이면 결과 페이지로 이동
+      // router.push('/survey/result');
       return;
     }
 
@@ -68,20 +71,20 @@ export default function SurveyQuestionsPage() {
   const badge = q.uiType === 'basicInfo' ? '설문 시작' : q.uiType === 'categorySelect' ? '카테고리 선택' : q.uiType === 'multiChoice' ? '선택 질문' : '강도 질문';
 
   return (
-    <SurveyShell title="설문 페이지">
+    <SurveyTitle title="설문 페이지">
       <div className="flex flex-col gap-4">
         {/* 진행 바 */}
         <ProgressBar value={progress} />
 
-        {/* 질문 영역 (배지 / 제목 / 설명 / 아이콘) */}
+        {/* 질문 영역 */}
         <Question badge={badge} title={q.title ?? '질문'} description={q.description} icon={<PillIcon className="h-12 w-12" />} />
 
         {/* 질문 유형에 따라 실제 입력 UI 렌더링 */}
         <QuestionRenderer question={q} value={answer} onChange={handleChange} />
 
-        {/* 하단 네비게이션 (이전 / 다음 / 제출) */}
+        {/* 하단 네비게이션 */}
         <BottomNav secondaryLabel={step === 0 ? undefined : '이전'} onSecondary={goPrev} primaryLabel={step === total - 1 ? '제출' : '다음'} onPrimary={handlePrimary} />
       </div>
-    </SurveyShell>
+    </SurveyTitle>
   );
 }
