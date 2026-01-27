@@ -2,7 +2,7 @@ import BasicInfo from './questions/BasicInfo';
 import Category from './questions/Category';
 import MultiChoice from './questions/MultiChoice';
 import ScaleChoice from './questions/ScaleChoice';
-import type { QuestionData } from '../data/Questions';
+import type { QuestionData } from '../../app/survey/data/Questions';
 
 // BasicInfo 값 타입
 type BasicInfoValue = {
