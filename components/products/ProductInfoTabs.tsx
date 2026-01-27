@@ -1,7 +1,8 @@
 type TabKey = 'features' | 'nutrition' | 'intake' | 'cautions';
 
 type ProductInfoTabsProps = {
-  active?: TabKey; // 지금은 고정용(기본값 features)
+  active: TabKey;
+  onChange: (key: TabKey) => void;
 };
 
 const TABS: { key: TabKey; label: string }[] = [
@@ -11,7 +12,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'cautions', label: '주의사항' },
 ];
 
-export default function ProductInfoTabs({ active = 'features' }: ProductInfoTabsProps) {
+export default function ProductInfoTabs({ active, onChange }: ProductInfoTabsProps) {
   return (
     <nav aria-label="상품 상세 탭" className="rounded-lg bg-yg-white px-6 pt-4 shadow">
       <div className="flex gap-6 border-b border-yg-lightgray">
@@ -19,17 +20,13 @@ export default function ProductInfoTabs({ active = 'features' }: ProductInfoTabs
           const isActive = tab.key === active;
 
           return (
-            <button key={tab.key} type="button" className={['relative pb-3 text-sm font-semibold transition', isActive ? 'text-yg-primary' : 'text-yg-gray hover:text-yg-darkgray'].join(' ')}>
+            <button key={tab.key} type="button" onClick={() => onChange(tab.key)} className={['relative pb-3 text-sm font-semibold transition', isActive ? 'text-yg-primary' : 'text-yg-gray hover:text-yg-darkgray'].join(' ')}>
               {tab.label}
-
-              {/* active underline */}
               {isActive && <span className="absolute left-0 right-0 -bottom-[1px] h-[3px] rounded-full bg-yg-primary" />}
             </button>
           );
         })}
       </div>
-
-      {/* 아래 여백 (시안 느낌 맞추기) */}
       <div className="h-3" />
     </nav>
   );
