@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import ProductSidePurchaseCard from '@/components/products/ProductSidePurchaseCard';
 import ProductInfoSection from '@/components/products/ProductInfoSection';
 import ProductInfoTabs from '@/components/products/ProductInfoTabs';
 import ProductSummary from '@/components/products/ProductSummary';
@@ -24,21 +23,17 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold text-yg-black">{product.name}</h1>
+    <main className="mx-auto max-w-5xl px-4 py-8 space-y-6">
+      {/* ✅ 정보 페이지: 우측 카드 없음, 단일 컬럼 */}
+      <ProductSummary name={product.name} summary={product.summary} brand={product.brand} rating={product.rating} reviewCount={product.reviewCount} imageUrl={product.imageUrl} tags={product.tags} />
 
-      <section className="grid grid-cols-12 gap-6">
-        <div className="col-span-8 space-y-6">
-          <ProductSummary name={product.name} summary={product.summary} price={product.price} brand={product.brand} rating={product.rating} reviewCount={product.reviewCount} shippingLabel={product.shippingLabel} imageUrl={product.imageUrl} tags={product.tags} />
+      {/* ✅ 탭: 스크롤 내려도 항상 보이게 */}
+      <div className="sticky top-16 z-20">
+        <ProductInfoTabs active={activeTab} onChange={handleChangeTab} />
+      </div>
 
-          {/* ✅ 탭 클릭 로직 연결 */}
-          <ProductInfoTabs active={activeTab} onChange={handleChangeTab} />
-
-          <ProductInfoSection features={product.features} nutritionFacts={product.nutritionFacts} intake={product.intake} cautions={product.cautions} />
-        </div>
-
-        <ProductSidePurchaseCard price={product.price} shippingLabel={product.shippingLabel} />
-      </section>
+      {/* ✅ 상세 섹션 */}
+      <ProductInfoSection features={product.features} nutritionFacts={product.nutritionFacts} intake={product.intake} cautions={product.cautions} />
     </main>
   );
 }
