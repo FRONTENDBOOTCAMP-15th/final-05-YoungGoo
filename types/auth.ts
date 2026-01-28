@@ -31,3 +31,53 @@ export interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   size: ButtonSize;
   variant: ButtonVariant;
 }
+
+// 사용자 정보
+export interface User {
+  _id: number;
+  email: string;
+  name: string;
+  phone: string;
+  age: string;
+  gender: string;
+  height: string;
+  weight: string;
+}
+
+// 토큰
+export interface AuthToken {
+  accessToken: string;
+  refreshToken: string;
+}
+
+// 로그인 응답 성공 타입 (토큰 미포함)
+export interface UserInfoRes {
+  ok: 1;
+  item: User;
+}
+
+// 로그인 응답 성공 타입 (토큰 포함)
+export interface LoginSuccessRes {
+  ok: 1;
+  item: User & { token: AuthToken };
+}
+
+// 서버 검증 에러 타입
+export interface validationErrorInfo {
+  type: string;
+  value: string;
+  msg: string;
+  location: string;
+}
+
+// 로그인 응답 실패 타입
+export interface ErrorRes {
+  ok: 0;
+  message: string;
+  errors?: {
+    [errorField: string]: validationErrorInfo;
+  };
+}
+
+export type LoginActionState = LoginSuccessRes | ErrorRes | null;
+export type UserActionState = UserInfoRes | ErrorRes | null;
