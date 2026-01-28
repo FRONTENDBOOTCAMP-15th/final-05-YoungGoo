@@ -25,6 +25,8 @@ export default function LoginForm() {
         gender: userState.item.gender,
         height: userState.item.height,
         weight: userState.item.weight,
+        address: userState.item.address,
+        addressDetail: userState.item.addressDetail,
       });
       alert(`안녕하세요, ${userState.item.name}님!\n로그인이 완료되었습니다!`);
       router.replace(redirect || '/');

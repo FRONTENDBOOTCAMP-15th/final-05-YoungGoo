@@ -42,6 +42,8 @@ export interface User {
   gender: string;
   height: string;
   weight: string;
+  address: string;
+  addressDetail: string;
 }
 
 // 토큰
