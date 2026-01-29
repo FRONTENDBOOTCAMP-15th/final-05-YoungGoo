@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import SurveyTitle from '@/components/survey/SurveyTitle';
 import ProgressBar from '@/components/survey/ProgressBar';
@@ -8,27 +9,42 @@ import Question from '@/components/survey/Question';
 import QuestionRenderer from '@/components/survey/QuestionRenderer';
 import BottomNav from '@/components/survey/Nav';
 
-import { QUESTIONS } from '@/app/survey/data/Questions';
 import PillIcon from '@/components/survey/icons/pill';
-import { useRouter } from 'next/navigation';
+
+import type { QuestionData } from '@/app/survey/data/Questions';
+import type { CategoryKey } from '@/app/survey/data/buildQuestion';
+import { buildQuestions } from '@/app/survey/data/buildQuestion';
 
 type AnswerMap = Record<string, unknown>;
 
+//카테고리 예상 전체 문항 수 8개
+const ESTIMATED_TOTAL_BEFORE_CATEGORY = 8;
+
 export default function SurveyQuestionsPage() {
   const router = useRouter();
-  // 몇 번째 질문인지
-  const [step, setStep] = useState(0);
 
-  // 질문 id를 key로 전체 설문 답변을 저장
+  const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<AnswerMap>({});
 
-  // 전체 질문 개수
-  const total = QUESTIONS.length;
+  const selectedCategories = answers['category'] as CategoryKey[] | undefined;
 
-  // 현재 step에 해당하는 질문 데이터
-  const q = QUESTIONS[step];
+  //동적 질문 리스트 생성
+  const questions: QuestionData[] = useMemo(() => {
+    return buildQuestions(selectedCategories);
+  }, [selectedCategories]);
 
-  // 질문 데이터가 없을 경우
+  const total = questions.length;
+
+  // 카테고리 설문에 따른 step 변화에 대한 안전장치
+  const safeStep = Math.min(step, Math.max(total - 1, 0));
+  const q = questions[safeStep];
+
+  //카테고리 선택 전(예상 질문 8개) -> 후(실제 질문 수)
+  const progressTotal = selectedCategories && selectedCategories.length > 0 ? total : ESTIMATED_TOTAL_BEFORE_CATEGORY;
+
+  // step 기준으로 progress바 증감
+  const progress = progressTotal <= 1 ? 0 : Math.round(((safeStep + 1) / progressTotal) * 100);
+
   if (!q) {
     return (
       <SurveyTitle title="설문 페이지">
@@ -37,13 +53,8 @@ export default function SurveyQuestionsPage() {
     );
   }
 
-  // 현재 질문의 답변 값
   const answer = answers[q.id];
 
-  // 진행률 계산 (퍼센트)
-  const progress = Math.round(((step + 1) / total) * 100);
-
-  // 질문 답변 변경 시 호출
   const handleChange = (next: unknown) => {
     setAnswers((prev) => ({
       ...prev,
@@ -51,40 +62,33 @@ export default function SurveyQuestionsPage() {
     }));
   };
 
-  // 이전 질문으로 이동
-  const goPrev = () => setStep((s) => Math.max(0, s - 1));
+  const goPrev = () => setStep(Math.max(0, safeStep - 1));
+  const goNext = () => setStep(Math.min(total - 1, safeStep + 1));
 
-  // 다음 질문으로 이동
-  const goNext = () => setStep((s) => Math.min(total - 1, s + 1));
+  const isLast = safeStep === total - 1;
 
-  // 하단 버튼 클릭 처리
   const handlePrimary = () => {
-    if (step === total - 1) {
+    if (isLast) {
+      // 다음 이슈에서 수정 예정
       console.log('SUBMIT answers:', answers);
       router.push('/survey/result');
       return;
     }
-
     goNext();
   };
 
-  // 질문 유형에 따른 상단 배지
   const badge = q.uiType === 'basicInfo' ? '설문 시작' : q.uiType === 'categorySelect' ? '카테고리 선택' : q.uiType === 'multiChoice' ? '선택 질문' : '강도 질문';
 
   return (
     <SurveyTitle title="설문 페이지">
       <div className="flex flex-col gap-4">
-        {/* 진행 바 */}
         <ProgressBar value={progress} />
 
-        {/* 질문 영역 */}
         <Question badge={badge} title={q.title ?? '질문'} description={q.description} icon={<PillIcon className="h-12 w-12" />} />
 
-        {/* 질문 유형에 따라 실제 입력 UI 렌더링 */}
         <QuestionRenderer question={q} value={answer} onChange={handleChange} />
 
-        {/* 하단 네비게이션 */}
-        <BottomNav secondaryLabel={step === 0 ? undefined : '이전'} onSecondary={goPrev} primaryLabel={step === total - 1 ? '제출' : '다음'} onPrimary={handlePrimary} />
+        <BottomNav secondaryLabel={safeStep === 0 ? undefined : '이전'} onSecondary={goPrev} primaryLabel={isLast ? '제출' : '다음'} onPrimary={handlePrimary} />
       </div>
     </SurveyTitle>
   );

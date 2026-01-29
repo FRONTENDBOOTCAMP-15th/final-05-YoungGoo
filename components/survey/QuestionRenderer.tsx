@@ -1,16 +1,16 @@
+'use client';
+
 import BasicInfo from './questions/BasicInfo';
 import Category from './questions/Category';
 import MultiChoice from './questions/MultiChoice';
 import ScaleChoice from './questions/ScaleChoice';
-import type { QuestionData } from '../../app/survey/data/Questions';
+import type { QuestionData } from '@/app/survey/data/Questions';
 
-// BasicInfo 값 타입
 type BasicInfoValue = {
   gender?: 'M' | 'F';
   ageGroup?: string;
 };
 
-// Props
 type Props = {
   question: QuestionData;
   value: unknown;
@@ -30,7 +30,7 @@ export default function QuestionRenderer({ question, value, onChange }: Props) {
     case 'categorySelect': {
       const v = Array.isArray(value) ? value : [];
 
-      return <Category categories={question.options} value={v} maxSelect={question.maxSelect ?? 2} onChange={(next) => onChange(next)} />;
+      return <Category categories={question.options} value={v} maxSelect={question.maxSelect} onChange={(next) => onChange(next)} />;
     }
 
     /* ================= multiChoice ================= */
@@ -43,13 +43,12 @@ export default function QuestionRenderer({ question, value, onChange }: Props) {
     /* ================= scaleChoice ================= */
     case 'scaleChoice': {
       const v = typeof value === 'number' ? value : undefined;
-
       const choices = question.scaleChoices?.map((label, idx) => ({
         value: idx + 1,
         label,
       }));
 
-      if (!choices) return null; // choices 있을 때만
+      if (!choices) return null;
 
       return <ScaleChoice value={v} onChange={(n) => onChange(n)} choices={choices} />;
     }
