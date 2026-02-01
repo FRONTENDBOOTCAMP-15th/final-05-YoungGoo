@@ -1,20 +1,14 @@
 // types/product.ts
 
-/* ==============================
- * 카테고리
- * ============================== */
 export type Category = {
   id: string;
   name: string;
 };
 
-/* ==============================
- * 영양 성분
- * ============================== */
 export type NutritionNutrient = {
   name: string;
-  amount: string;
-  dailyValue: string;
+  amount?: string;
+  percent?: string;
 };
 
 export type NutritionInfoExample = {
@@ -22,43 +16,28 @@ export type NutritionInfoExample = {
   nutrients: NutritionNutrient[];
 };
 
-/* ==============================
- * 상품 (서버 기준)
- * ============================== */
 export type SupplementItem = {
-  _id: number;
-
-  createdAt: string;
-  updatedAt: string;
-
-  mainId: string;
+  _id: string;
+  name: string;
+  price: number;
   categoryId: string;
 
-  name: string;
-  content: string;
-
+  /** 상품 요약 */
+  summary: string;
   mainNutrients: string[];
   mainFunctions: string[];
 
+  /** 섭취 정보 */
   intakeGuide: string;
   precautions: string[];
   storage: string;
 
+  /** 영양 정보 */
   nutritionInfoExample?: NutritionInfoExample;
 
-  price: number;
-  quantity: number;
-
-  show: boolean;
-  active: boolean;
-
-  replies: number;
-  bookmarks: number;
-  likes: number;
-  options: number;
+  /** 이미지 */
+  imageUrl: string;
+  tags?: string[];
 };
 
-/* ==============================
- * 정렬 타입
- * ============================== */
 export type SortType = 'popular' | 'priceLow' | 'priceHigh';
