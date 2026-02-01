@@ -16,14 +16,9 @@ export type ApiResponse<T> = {
   message?: string;
 };
 
-export async function getProducts(page = 1, limit = 20): Promise<ApiResponse<SupplementItem[]>> {
+export async function getProducts(): Promise<ApiResponse<SupplementItem[]>> {
   try {
-    const params = new URLSearchParams({
-      page: String(page),
-      limit: String(limit),
-    });
-
-    const url = `${API_URL}/products?${params.toString()}`;
+    const url = `${API_URL}/products`;
 
     const res = await fetch(url, {
       headers: {
@@ -34,9 +29,9 @@ export async function getProducts(page = 1, limit = 20): Promise<ApiResponse<Sup
 
     const json = await res.json();
 
-    console.log('API raw response:', json); // 🔥
+    console.log('API raw response:', json);
 
-    if (json.ok !== 1 || !Array.isArray(json.data)) {
+    if (json.ok !== 1 || !Array.isArray(json.item)) {
       return {
         ok: 0,
         item: [],
@@ -46,7 +41,8 @@ export async function getProducts(page = 1, limit = 20): Promise<ApiResponse<Sup
 
     return {
       ok: 1,
-      item: json.data,
+      item: json.item,
+      pagination: json.pagination,
     };
   } catch (e) {
     console.error(e);

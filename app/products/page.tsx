@@ -66,8 +66,6 @@ export default function ProductsPage() {
         if (!alive) return;
         setIsLoading(false);
       }
-
-      console.log('allProducts[0]:', allProducts[0]);
     }
 
     fetchProducts();
@@ -75,6 +73,9 @@ export default function ProductsPage() {
     return () => {
       alive = false;
     };
+
+    console.log('allProducts:', allProducts);
+    console.log('selectedCategoryId:', selectedCategoryId);
   }, [retryKey]);
 
   const handleRetry = () => setRetryKey((k) => k + 1);
@@ -107,7 +108,6 @@ export default function ProductsPage() {
             정렬
           </label>
           <select id="sort" value={sort} onChange={(e) => setSort(e.target.value as SortType)} className="h-9 rounded-lg border border-yg-lightgray bg-white px-3 text-sm" aria-label="상품 정렬 방식 선택">
-            <option value="popular">인기순</option>
             <option value="priceLow">가격 낮은순</option>
             <option value="priceHigh">가격 높은순</option>
           </select>
