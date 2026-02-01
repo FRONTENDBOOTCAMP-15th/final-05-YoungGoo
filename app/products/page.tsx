@@ -13,7 +13,7 @@ import type { Category, SupplementItem, SortType } from '@/types/product';
 export default function ProductsPage() {
   const categories: Category[] = useMemo(
     () => [
-      { id: 'general', name: '전체' },
+      { id: 'all', name: '전체' },
       { id: 'diet', name: '다이어트' },
       { id: 'eye', name: '눈건강' },
       { id: 'gut', name: '장건강' },
@@ -52,7 +52,8 @@ export default function ProductsPage() {
         if (!alive) return;
 
         if (res.ok === 1) {
-          setAllProducts(res.data ?? []);
+          console.log('products : ', res.item);
+          setAllProducts(res.item ?? []);
         } else {
           setAllProducts([]);
           setError(res.message ?? '상품을 불러오는데 실패했습니다.');
@@ -65,6 +66,8 @@ export default function ProductsPage() {
         if (!alive) return;
         setIsLoading(false);
       }
+
+      console.log('allProducts[0]:', allProducts[0]);
     }
 
     fetchProducts();
