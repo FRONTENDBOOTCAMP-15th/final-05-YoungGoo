@@ -1,45 +1,37 @@
 'use client';
 import '@/app/globals.css';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import useUserStore from '@/store/userStore';
 import ProfileCard from '@/components/mypage/ProfileCard';
 import TabMenu from '@/components/mypage/TabMenu';
 import UserInfoTab from '@/components/mypage/UserInfoTab';
 import SubscriptionTab from '@/components/mypage/SubscriptionTab';
 import SurveyTab from '@/components/mypage/SurveyTab';
 import Modal from '@/components/mypage/Modal';
+import type { UserInfo, SubscriptionInfo, TabType } from '@/types/mypage';
 
-interface UserInfo {
-  nickname: string;
-  userId: string;
-  age: number;
-  gender: string;
-  height: number;
-  weight: number;
-}
-
-interface SubscriptionInfo {
-  isSubscribed: boolean;
-  productName: string;
-  dosage: string;
-  paymentDate: string;
-  nextPaymentDate: string;
-}
-
-type TabType = 'info' | 'subscription' | 'survey';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID || '';
 
 export default function MyPage() {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+  const resetUser = useUserStore((state) => state.resetUser);
 
   // 사용자 정보 상태
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    nickname: '홍길동',
-    userId: 'user123',
-    age: 30,
-    gender: '남성',
-    height: 175,
-    weight: 70,
-  });
+  const userInfo = useMemo<UserInfo>(
+    () => ({
+      name: user?.name || '기본 이름',
+      email: user?.email || '기본 이메일',
+      age: user?.age || '',
+      gender: user?.gender === 'M' ? '남성' : user?.gender === 'F' ? '여성' : '기타',
+      height: user?.height || '',
+      weight: user?.weight || '',
+    }),
+    [user]
+  );
 
   // 구독 정보 상태
   const [subscriptionInfo] = useState<SubscriptionInfo>({
@@ -61,13 +53,89 @@ export default function MyPage() {
   const [activeTab, setActiveTab] = useState<TabType>('info');
 
   // 사용자 정보 수정 저장
-  const handleSaveUserInfo = (info: UserInfo) => {
-    setUserInfo(info);
-    alert('회원정보가 수정되었습니다.');
+  const handleSaveUserInfo = async (info: UserInfo) => {
+    // 1. user._id 확인
+    if (!user?._id) {
+      alert('사용자 정보를 찾을 수 없습니다.');
+      return;
+    }
+    // 2. 토큰 확인
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      router.push('/login');
+      return;
+    }
+
+    try {
+      // 3. 요청 데이터 준비
+      const requestData = {
+        name: info.name,
+        email: info.email,
+        age: info.age,
+        gender: info.gender === '남성' ? 'M' : info.gender === '여성' ? 'F' : info.gender,
+        height: info.height,
+        weight: info.weight,
+      };
+
+      // 4. PATCH /users/{_id} 호출
+      const response = await fetch(`${API_URL}/users/${user._id}`, {
+        method: 'PATCH',
+        headers: {
+          'client-id': CLIENT_ID,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        } as HeadersInit,
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        console.error('HTTP 에러:', response.status);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      // 5. JSON 파싱
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('응답 데이터:', data);
+      } catch (parseError) {
+        console.error('JSON 파싱 실패:', parseError);
+        throw new Error('서버 응답을 읽을 수 없습니다.');
+      }
+
+      // 6. 성공 시 store 업데이트
+      if (data.ok === 1 && data.item) {
+        console.log('수정 성공');
+        setUser({
+          ...user,
+          name: data.item.name,
+          email: data.item.email,
+          age: data.item.age,
+          gender: data.item.gender,
+          height: data.item.height,
+          weight: data.item.weight,
+        });
+        alert('회원정보가 수정되었습니다.');
+      } else {
+        console.error('응답 형식 오류:', data);
+        throw new Error(data.message || '사용자 정보 수정에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('사용자 정보 수정 오류:', error);
+
+      if (error instanceof Error) {
+        console.error('에러 메시지:', error.message);
+      }
+
+      alert(error instanceof Error ? error.message : '사용자 정보 수정 중 오류가 발생했습니다.');
+    }
   };
 
   // 로그아웃
   const handleLogout = () => {
+    resetUser();
     setShowLogoutModal(false);
     alert('로그아웃되었습니다.');
     router.push('/');
@@ -76,6 +144,7 @@ export default function MyPage() {
   // 회원탈퇴
   const handleDeleteAccount = () => {
     if (deleteConfirmText === '회원탈퇴') {
+      resetUser();
       setShowDeleteModal(false);
       alert('회원탈퇴가 완료되었습니다.');
       router.push('/');
@@ -97,7 +166,7 @@ export default function MyPage() {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row px-4 py-10 gap-6">
           {/* 왼쪽: 프로필 카드 */}
           <div className="w-full lg:w-1/3 flex flex-col gap-6">
-            <ProfileCard nickname={userInfo.nickname} userId={userInfo.userId} onLogout={() => setShowLogoutModal(true)} onDeleteAccount={() => setShowDeleteModal(true)} />
+            <ProfileCard name={userInfo.name} email={userInfo.email} onLogout={() => setShowLogoutModal(true)} onDeleteAccount={() => setShowDeleteModal(true)} />
           </div>
 
           {/* 오른쪽: 탭 컨텐츠 */}
