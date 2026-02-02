@@ -40,7 +40,7 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   const seller_id = 1;
-  const product = await getProduct(_id, seller_id);
+  const product = await getProduct(_id);
 
   if (!product) {
     return (
