@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { validateAnswer } from '@/app/survey/data/validation';
 
 import SurveyTitle from '@/components/survey/SurveyTitle';
 import ProgressBar from '@/components/survey/ProgressBar';
@@ -54,6 +55,7 @@ export default function SurveyQuestionsPage() {
   }
 
   const answer = answers[q.id];
+  const { isValid: isCurrentValid } = validateAnswer(q, answer);
 
   const handleChange = (next: unknown) => {
     setAnswers((prev) => ({
@@ -87,8 +89,7 @@ export default function SurveyQuestionsPage() {
         <Question badge={badge} title={q.title ?? '질문'} description={q.description} icon={<PillIcon className="h-12 w-12" />} />
 
         <QuestionRenderer question={q} value={answer} onChange={handleChange} />
-
-        <BottomNav secondaryLabel={safeStep === 0 ? undefined : '이전'} onSecondary={goPrev} primaryLabel={isLast ? '제출' : '다음'} onPrimary={handlePrimary} />
+        <BottomNav secondaryLabel={safeStep === 0 ? undefined : '이전'} onSecondary={goPrev} primaryLabel={isLast ? '제출' : '다음'} onPrimary={handlePrimary} disabledPrimary={!isCurrentValid} />
       </div>
     </SurveyTitle>
   );
