@@ -1,4 +1,6 @@
+// components/products/ProductCard.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 
 type ProductCardProps = {
   id: number;
@@ -6,17 +8,22 @@ type ProductCardProps = {
   price: number;
   imageUrl?: string;
   badges?: string[];
+  href?: string;
 };
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('ko-KR').format(price);
 }
 
-export default function ProductCard({ id, name, price, imageUrl, badges = [] }: ProductCardProps) {
+export default function ProductCard({ id, name, price, imageUrl, badges = [], href }: ProductCardProps) {
   return (
-    <Link href={`/products/${id}`} className="rounded-3xl bg-yg-white p-5 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl" aria-label={`${name} 상품 상세보기`}>
-      <div className="aspect-square w-full rounded-2xl bg-yg-lightgray">{/* imageUrl 나중에 Image 컴포넌트로 교체 가능 */}</div>
+    <Link href={href ?? `/products/${id}`} className="rounded-3xl bg-yg-white p-5 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl" aria-label={`${name} 상품 상세보기`}>
+      {/* 이미지 영역 */}
+      <div className="aspect-square w-full rounded-2xl bg-yg-lightgray overflow-hidden relative">
+        {imageUrl ? <Image src={imageUrl} alt={name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 33vw" /> : <div className="w-full h-full flex items-center justify-center text-yg-darkgray text-sm">이미지 없음</div>}
+      </div>
 
+      {/* 상품 정보 */}
       <div className="mt-5">
         <h3 className="text-xl font-extrabold text-yg-black">{name}</h3>
 
