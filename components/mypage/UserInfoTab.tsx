@@ -1,14 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TabCard from './TabCard';
-
-interface UserInfo {
-  nickname: string;
-  userId: string;
-  age: number;
-  gender: string;
-  height: number;
-  weight: number;
-}
+import type { UserInfo } from '@/types/mypage';
 
 interface UserInfoTabProps {
   userInfo: UserInfo;
@@ -18,6 +10,10 @@ interface UserInfoTabProps {
 export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(userInfo);
+
+  useEffect(() => {
+    setFormData(userInfo);
+  }, [userInfo]);
 
   const handleSave = () => {
     onSave(formData);
@@ -50,16 +46,16 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
             <input
               type="text"
               className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
-              value={formData.nickname}
-              onChange={(e) => setFormData({ ...formData, nickname: e.target.value })}
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-yg-primary font-semibold">아이디</label>
+            <label className="text-yg-primary font-semibold">이메일</label>
             <input
               type="text"
               className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary bg-gray-100"
-              value={formData.userId}
+              value={formData.email}
               disabled
             />
           </div>
@@ -70,7 +66,7 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
                 value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: parseInt(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, age: e.target.value })}
               />
             </div>
             <div className="flex flex-col gap-2 flex-1">
@@ -93,7 +89,7 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
                 value={formData.height}
-                onChange={(e) => setFormData({ ...formData, height: parseInt(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, height: e.target.value })}
               />
             </div>
             <div className="flex flex-col gap-2 flex-1">
@@ -102,7 +98,7 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
                 value={formData.weight}
-                onChange={(e) => setFormData({ ...formData, weight: parseInt(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
               />
             </div>
           </div>
@@ -125,11 +121,11 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
         <div className="space-y-4">
           <div className="flex justify-between py-3 border-b border-yg-lightgray">
             <span className="text-yg-darkgray">닉네임</span>
-            <span className="font-semibold">{userInfo.nickname}</span>
+            <span className="font-semibold">{userInfo.name}</span>
           </div>
           <div className="flex justify-between py-3 border-b border-yg-lightgray">
-            <span className="text-yg-darkgray">아이디</span>
-            <span className="font-semibold">{userInfo.userId}</span>
+            <span className="text-yg-darkgray">이메일</span>
+            <span className="font-semibold">{userInfo.email}</span>
           </div>
           <div className="flex justify-between py-3 border-b border-yg-lightgray">
             <span className="text-yg-darkgray">연령</span>
