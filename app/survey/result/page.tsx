@@ -14,6 +14,7 @@ const MOCK_SUPPLEMENTS: Supplement[] = [
   {
     id: 'multi',
     name: '멀티비타민 프리미엄',
+    price: 10000,
     description: '전반적인 영양소 균형이 필요한 상태로 판단되어, 비타민 B군과 C, D가 풍부한 종합 비타민을 추천드립니다. 하루 에너지 레벨을 높이는 데 도움이 됩니다.',
     tags: [{ label: '에너지 증진' }, { label: '면역력' }],
     badge: 'AI 추천',
@@ -21,6 +22,7 @@ const MOCK_SUPPLEMENTS: Supplement[] = [
   {
     id: 'omega3',
     name: '오메가-3 피쉬오일',
+    price: 10000,
     description: '스트레스로 인한 염증 반응을 줄이는 데 오메가-3가 효과적입니다. 두뇌 건강과 심혈관 건강을 동시에 관리할 수 있습니다.',
     tags: [{ label: '스트레스 완화' }, { label: '항산화' }],
     badge: 'AI 추천',
@@ -28,6 +30,7 @@ const MOCK_SUPPLEMENTS: Supplement[] = [
   {
     id: 'magnesium',
     name: '마그네슘 플러스',
+    price: 10000,
     description: '수면의 질 개선과 근육 이완에 도움을 주는 마그네슘이 부족한 것으로 보입니다. 스트레스 완화와 숙면에 효과적입니다.',
     tags: [{ label: '스트레스' }, { label: '피로 회복' }],
     badge: 'AI 추천',
@@ -42,6 +45,22 @@ export default function SurveyResultPage() {
   const summary = MOCK_SUMMARY;
   const supplements = MOCK_SUPPLEMENTS;
 
+  // 구독하기 버튼 핸들러
+  const handleSubscribe = () => {
+    // 추천 상품 정보를 sessionStorage에 저장
+    const recommendedProducts = supplements.map(item => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      description: item.description,
+    }));
+
+    sessionStorage.setItem('recommendedProducts', JSON.stringify(recommendedProducts));
+
+    // 구독 페이지로 이동
+    router.push('/subscription');
+  };
+
   return (
     <>
       {/* 상단 */}
@@ -51,12 +70,12 @@ export default function SurveyResultPage() {
         {/* 추천 영양제 리스트 */}
         <section className="mb-10">
           <div className="mb-4">
-            <h2 className="text-3xl font-bold text-[var(--color-yg-black)]">추천 영양제</h2>
-            <p className="mt-1 text-sm font-normal text-[var(--color-yg-darkgray)]">AI가 분석한 맞춤 영양제 3가지</p>
+            <h2 className="text-3xl font-bold text-yg-black">추천 영양제</h2>
+            <p className="mt-1 text-sm font-normal text-yg-darkgray">AI가 분석한 맞춤 영양제 3가지</p>
           </div>
 
           {supplements.length === 0 ? (
-            <div className="rounded-2xl border border-[var(--color-yg-lightgray)] bg-white p-6 text-sm text-[var(--color-yg-darkgray)] shadow-sm">추천 조건을 충족하는 건강식품이 없어요.</div>
+            <div className="rounded-2xl border border-yg-lightgray bg-white p-6 text-sm text-yg-darkgray shadow-sm">추천 조건을 충족하는 건강식품이 없어요.</div>
           ) : (
             <div className="space-y-6">
               {supplements.slice(0, 3).map((item) => (
@@ -69,7 +88,7 @@ export default function SurveyResultPage() {
         <AiQuestion />
       </ResultShell>
       {/* 구독하기 */}
-      <SubscribeButton onClick={() => router.push('/subscription')} />
+      <SubscribeButton onClick={handleSubscribe} />
     </>
   );
 }
