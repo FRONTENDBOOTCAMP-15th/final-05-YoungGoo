@@ -16,6 +16,9 @@ import type { QuestionData } from '@/app/survey/data/Questions';
 import type { CategoryKey } from '@/app/survey/data/buildQuestion';
 import { buildQuestions } from '@/app/survey/data/buildQuestion';
 
+import { SURVEY_RESULT_PAYLOAD_KEY } from '@/app/survey/constants/storage';
+import { buildSurveyPayload } from '@/app/survey/utils/buildSurveyPayload';
+
 type AnswerMap = Record<string, unknown>;
 
 //카테고리 예상 전체 문항 수 8개
@@ -71,11 +74,17 @@ export default function SurveyQuestionsPage() {
 
   const handlePrimary = () => {
     if (isLast) {
-      // 다음 이슈에서 수정 예정
-      console.log('SUBMIT answers:', answers);
+      const payload = buildSurveyPayload({
+        answers,
+        selectedCategories: selectedCategories ?? [],
+      });
+
+      sessionStorage.setItem(SURVEY_RESULT_PAYLOAD_KEY, JSON.stringify(payload));
+
       router.push('/survey/result');
       return;
     }
+
     goNext();
   };
 
