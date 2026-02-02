@@ -18,32 +18,37 @@ export type NutritionInfoExample = {
 };
 
 // 상품 (리스트/상세 공용)
-export type SupplementItem = {
-  _id: string;
-  name: string;
-  summary: string;
-  price: number;
-
+export interface SupplementItem {
+  _id: number;
+  createdAt: string;
+  updatedAt: string;
+  mainId: string;
   categoryId: string;
-
+  name: string;
+  content: string;
   mainNutrients: string[];
   mainFunctions: string[];
-
   intakeGuide: string;
   precautions: string[];
   storage: string;
-
-  nutritionInfoExample?: NutritionInfoExample;
-
+  nutritionInfoExample?: {
+    servingSize: string;
+    nutrients: {
+      name: string;
+      amount: string;
+      dailyValue: string;
+    }[];
+  };
+  seller_id: number; // 추가
+  price: number;
+  quantity: number;
+  show: boolean;
+  active: boolean;
+  views: number;
   imageUrl?: string;
+  summary?: string;
   tags?: string[];
-
-  createdAt?: string;
-  updatedAt?: string;
-
-  show?: boolean;
-  active?: boolean;
-};
+}
 
 // 정렬
 export type SortType = 'popular' | 'priceLow' | 'priceHigh';

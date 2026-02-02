@@ -1,22 +1,21 @@
 import Link from 'next/link';
 
 type ProductCardProps = {
-  id: string;
+  id: number;
   name: string;
   price: number;
   imageUrl?: string;
   badges?: string[];
-  href: string;
 };
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('ko-KR').format(price);
 }
 
-export default function ProductCard({ id, name, price, imageUrl, badges = [], href }: ProductCardProps) {
+export default function ProductCard({ id, name, price, imageUrl, badges = [] }: ProductCardProps) {
   return (
-    <Link href={href} className="rounded-3xl bg-yg-white p-5 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl" aria-label={`${name} 상품 상세보기`}>
-      <div className="aspect-square w-full rounded-2xl bg-yg-lightgray">{/* imageUrl 나중에 Image로 교체 */}</div>
+    <Link href={`/products/${id}`} className="rounded-3xl bg-yg-white p-5 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl" aria-label={`${name} 상품 상세보기`}>
+      <div className="aspect-square w-full rounded-2xl bg-yg-lightgray">{/* imageUrl 나중에 Image 컴포넌트로 교체 가능 */}</div>
 
       <div className="mt-5">
         <h3 className="text-xl font-extrabold text-yg-black">{name}</h3>
