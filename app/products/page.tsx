@@ -17,12 +17,13 @@ export default function ProductsPage() {
       { id: 'diet', name: '다이어트' },
       { id: 'eye', name: '눈건강' },
       { id: 'gut', name: '장건강' },
-      { id: 'immune_faigue', name: '면역•피로' },
+      { id: 'immune_fatigue', name: '면역•피로' },
       { id: 'skin_hair', name: '피부•모발' },
-      { id: 'woman', name: '여성건강' },
+      { id: 'women', name: '여성건강' },
       { id: 'brain', name: '뇌•집중력' },
       { id: 'blood_flow', name: '혈액순환' },
       { id: 'bone_joint', name: '뼈•관절' },
+      { id: 'general', name: '종합건강' },
     ],
     []
   );
