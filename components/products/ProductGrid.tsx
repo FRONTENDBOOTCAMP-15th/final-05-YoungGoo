@@ -8,16 +8,16 @@ type Props = {
 };
 
 const categoryImages: Record<string, string> = {
-  diet: '/images/category/diet.png',
-  eye: '/images/category/eye_health.png',
-  gut: '/images/category/gut_health.png',
-  immune_faigue: '/images/category/immune_energy.png',
-  skin_hair: '/images/category/skin_hair.png',
-  woman: '/images/category/womans_health.png',
-  brain: '/images/category/brain_focus.png',
-  blood_flow: '/images/category/circulation.png',
-  bone_joint: '/images/category/bone_joint.png',
-  general: '/images/category/general.png',
+  diet: '/images/category/diet.png', // 다이어트
+  eye: '/images/category/eye_health.png', // 눈건강
+  gut: '/images/category/gut_health.png', // 장건강
+  immune_fatigue: '/images/category/immune_energy.png', // 면역, 피로
+  skin_hair: '/images/category/skin_hair.png', // 피부, 모발
+  women: '/images/category/womens_health.png', // 여성건강
+  brain: '/images/category/brain_focus.png', // 뇌, 집중력
+  blood_flow: '/images/category/circulation.png', // 혈액순환
+  bone_joint: '/images/category/bone_joint.png', // 뼈, 관절
+  general: '/images/category/general.png', //종합건강
 };
 
 export default function ProductGrid({ items, renderLink }: Props) {
