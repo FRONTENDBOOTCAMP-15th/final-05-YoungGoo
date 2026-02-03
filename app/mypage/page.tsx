@@ -2,6 +2,8 @@
 import '@/app/globals.css';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { logout } from '@/actions/auth';
+import { updateUserInfo } from '@/actions/mypage';
 import useUserStore from '@/store/userStore';
 import ProfileCard from '@/components/mypage/ProfileCard';
 import TabMenu from '@/components/mypage/TabMenu';
@@ -10,9 +12,6 @@ import SubscriptionTab from '@/components/mypage/SubscriptionTab';
 import SurveyTab from '@/components/mypage/SurveyTab';
 import Modal from '@/components/mypage/Modal';
 import type { UserInfo, SubscriptionInfo, TabType } from '@/types/mypage';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID || '';
 
 export default function MyPage() {
   const router = useRouter();
@@ -49,107 +48,96 @@ export default function MyPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
-  // 탭 상태
-  const [activeTab, setActiveTab] = useState<TabType>('info');
+ // 탭 상태
+ const [activeTab, setActiveTab] = useState<TabType>('info');
 
-  // 사용자 정보 수정 저장
+ // 사용자 정보 수정 저장
   const handleSaveUserInfo = async (info: UserInfo) => {
     // 1. user._id 확인
     if (!user?._id) {
       alert('사용자 정보를 찾을 수 없습니다.');
       return;
     }
-    // 2. 토큰 확인
-    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      router.push('/login');
-      return;
-    }
-
+    // 2. 사용자 정보 수정
     try {
-      // 3. 요청 데이터 준비
-      const requestData = {
+      const result = await updateUserInfo(user._id, {
         name: info.name,
-        email: info.email,
         age: info.age,
         gender: info.gender === '남성' ? 'M' : info.gender === '여성' ? 'F' : info.gender,
         height: info.height,
         weight: info.weight,
-      };
-
-      // 4. PATCH /users/{_id} 호출
-      const response = await fetch(`${API_URL}/users/${user._id}`, {
-        method: 'PATCH',
-        headers: {
-          'client-id': CLIENT_ID,
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        } as HeadersInit,
-        body: JSON.stringify(requestData),
       });
 
-      if (!response.ok) {
-        console.error('HTTP 에러:', response.status);
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      // 인증 만료
+      if (result.ok === 0 && result.message?.includes('인증')) {
+        alert(result.message);
+        await handleLogout();
+        return;
       }
 
-      // 5. JSON 파싱
-      const responseText = await response.text();
-      let data;
-      try {
-        data = JSON.parse(responseText);
-        console.log('응답 데이터:', data);
-      } catch (parseError) {
-        console.error('JSON 파싱 실패:', parseError);
-        throw new Error('서버 응답을 읽을 수 없습니다.');
+      // 실패
+      if (result.ok === 0) {
+        alert(result.message);
+        return;
       }
 
-      // 6. 성공 시 store 업데이트
-      if (data.ok === 1 && data.item) {
-        console.log('수정 성공');
+      // 성공
+      if (result.ok === 1 && result.item) {
+        console.log('수정 성공!');
         setUser({
           ...user,
-          name: data.item.name,
-          email: data.item.email,
-          age: data.item.age,
-          gender: data.item.gender,
-          height: data.item.height,
-          weight: data.item.weight,
+          name: result.item.name,
+          age: result.item.age,
+          gender: result.item.gender,
+          height: result.item.height,
+          weight: result.item.weight,
         });
         alert('회원정보가 수정되었습니다.');
-      } else {
-        console.error('응답 형식 오류:', data);
-        throw new Error(data.message || '사용자 정보 수정에 실패했습니다.');
       }
     } catch (error) {
       console.error('사용자 정보 수정 오류:', error);
-
-      if (error instanceof Error) {
-        console.error('에러 메시지:', error.message);
-      }
-
-      alert(error instanceof Error ? error.message : '사용자 정보 수정 중 오류가 발생했습니다.');
+      alert('사용자 정보 수정 중 오류가 발생했습니다.');
     }
   };
 
   // 로그아웃
-  const handleLogout = () => {
-    resetUser();
-    setShowLogoutModal(false);
-    alert('로그아웃되었습니다.');
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      resetUser();
+      setShowLogoutModal(false);
+      alert(`감사합니다, ${user?.name}님!\n로그아웃이 완료되었습니다!`);
+      router.replace('/');
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
+      alert('로그아웃 중 오류가 발생했습니다.');
+    }
   };
 
   // 회원탈퇴
-  const handleDeleteAccount = () => {
-    if (deleteConfirmText === '회원탈퇴') {
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== '회원탈퇴') {
+      alert('입력한 문구가 일치하지 않습니다.');
+      return;
+    }
+
+    // user 및 _id 확인
+    if (!user?._id) {
+      console.error(' user 또는 _id 없음:', user);
+      alert('사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.');
+      router.replace('/login');
+      return;
+    }
+
+    try {
+      await logout();
       resetUser();
       setShowDeleteModal(false);
       alert('회원탈퇴가 완료되었습니다.');
-      router.push('/');
-    } else {
-      alert('입력한 문구가 일치하지 않습니다.');
+      router.replace('/');
+    } catch (error) {
+      console.error('회원탈퇴 오류:', error);
+      alert('회원탈퇴 중 오류가 발생했습니다.');
     }
   };
 
@@ -176,10 +164,10 @@ export default function MyPage() {
 
             {/* 사용자 정보 탭 */}
             {activeTab === 'info' && <UserInfoTab userInfo={userInfo} onSave={handleSaveUserInfo} />}
-
+            
             {/* 구독 상태 탭 */}
             {activeTab === 'subscription' && <SubscriptionTab subscriptionInfo={subscriptionInfo} onNavigateToSubscription={() => router.push('/subscription')} />}
-
+            
             {/* 설문 정보 탭 */}
             {activeTab === 'survey' && <SurveyTab surveys={surveys} onSurveyClick={() => router.push('/survey/result')} />}
           </div>
@@ -192,17 +180,7 @@ export default function MyPage() {
       </Modal>
 
       {/* 회원탈퇴 모달 */}
-      <Modal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setDeleteConfirmText('');
-        }}
-        title="회원탈퇴"
-        onConfirm={handleDeleteAccount}
-        confirmText="탈퇴하기"
-        confirmButtonClass="bg-yg-secondary"
-      >
+      <Modal isOpen={showDeleteModal}onClose={() => { setShowDeleteModal(false); setDeleteConfirmText('') }} title="회원탈퇴" onConfirm={handleDeleteAccount} confirmText="탈퇴하기" confirmButtonClass="bg-yg-secondary">
         <div className="bg-yg-secondary rounded-[50px] shadow-lg px-10 py-6 my-6">
           <h3 className="font-semibold mb-3 text-yg-white">⚠️ 주의사항</h3>
           <ul className="space-y-2 text-sm text-yg-white">
