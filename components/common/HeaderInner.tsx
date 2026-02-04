@@ -34,7 +34,7 @@ export default function HeaderInner() {
             <ul id="site-nav" className={[isOpen ? 'block' : 'hidden', `fixed right-4 top-18 p-4 bg-white border border-gray-200 rounded-2xl md:top-24 lg:flex lg:gap-6 lg:items-center lg:static lg:p-0 lg:bg-inherit lg:border-0 lg:rounded-none`].join(' ')}>
               <li className="mb-2 lg:mb-0">
                 <Link href="/survey" className="group relative block px-3 py-1 font-medium text-[12px] text-white text-center transition md:text-[14px] lg:hover:-translate-y-0.5 lg:active:translate-y-0">
-                  <span className="absolute left-0 top-0 -z-10 w-full h-full bg-yg-secondary rounded-full transition-all lg:group-hover:shadow-[2px_3px_0px_#7a627a] lg:group-active:shadow-none" aria-hidden="true"></span>
+                  <span className="absolute left-0 top-0 -z-10 w-full h-full bg-yg-secondary rounded-full transition-all lg:group-hover:shadow-[2px_3px_0px_rgba(0,0,0,0.25)] lg:group-active:shadow-none" aria-hidden="true"></span>
                   AI 추천받기
                 </Link>
               </li>
@@ -78,7 +78,7 @@ export default function HeaderInner() {
             </ul>
 
             <button type="button" className="block lg:hidden" onClick={() => setIsOpen((prev) => !prev)} aria-expanded={isOpen} aria-controls="site-nav" aria-label="메뉴 열기/닫기">
-              <Image width={32} height={32} src="/icons/all-menu.svg" alt="전체 메뉴" className="md:w-10 md:h-10" />
+              <Image width={32} height={32} src="/icons/all_menu.svg" alt="전체 메뉴" className="md:w-10 md:h-10" />
             </button>
           </nav>
         ) : null}
