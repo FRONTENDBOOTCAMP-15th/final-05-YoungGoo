@@ -27,6 +27,7 @@ function saveRecommendedProducts(supplements: Supplement[]) {
     name: item.name,
     price: item.price,
     description: item.description,
+    imageUrl: item.imageUrl,
   }));
 
   sessionStorage.setItem(RECOMMENDED_PRODUCTS_KEY, JSON.stringify(recommendedProducts));
