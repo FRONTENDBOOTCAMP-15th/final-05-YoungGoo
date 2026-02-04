@@ -5,6 +5,7 @@ export interface RecommendedProduct {
   name: string;
   price: number;
   description?: string;
+  imageUrl?: string;
 }
 
 export interface ApiProduct {
@@ -22,6 +23,7 @@ export interface SubscriptionProduct {
   price: number;
   quantity: number;
   checked: boolean;
+  imageUrl?: string;
 }
 
 export interface OrdererInfo {
@@ -33,8 +35,8 @@ export interface OrdererInfo {
 export interface ShippingInfo {
   name: string;
   phone: string;
-  address1: string;
-  address2: string;
+  address: string;
+  addressDetail: string;
 }
 
 export type PaymentMethod = 'CARD' | 'VIRTUAL_ACCOUNT' | 'TRANSFER' | '';
