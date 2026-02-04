@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 export type SupplementTag = { label: string };
 
@@ -9,8 +10,8 @@ export type Supplement = {
   description: string;
   tags: SupplementTag[];
   badge?: string;
+  imageUrl?: string;
 };
-
 type Props = {
   item: Supplement;
   onClickDetail?: (id: string) => void;
@@ -20,13 +21,13 @@ export default function SupplementCard({ item, onClickDetail }: Props) {
   return (
     <article className="overflow-hidden rounded-2xl border border-yg-lightgray bg-white shadow-sm">
       {/* 이미지 영역 */}
-      <div className="relative h-52 w-full bg-yg-white">
-        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-yg-lightgray bg-white px-3 py-1 text-xs font-semibold text-yg-black">
+      <div className="relative h-52 w-full overflow-hidden bg-yg-white">
+        <div className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-yg-lightgray bg-white px-3 py-1 text-xs font-semibold text-yg-black">
           <span className="h-2 w-2 rounded-full bg-yg-primary" />
           {item.badge ?? 'AI 추천'}
         </div>
-        {/* 현재는 실제 상품 이미지가 없어 아이콘 사용 */}
-        <div className="flex h-full items-center justify-center text-5xl">💊</div>
+
+        {item.imageUrl ? <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" /> : <div className="flex h-full items-center justify-center text-5xl">💊</div>}
       </div>
 
       <div className="p-6">
