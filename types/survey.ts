@@ -43,7 +43,7 @@ export type SurveyResultPayload = {
     ageGroup: string;
   };
 
-  selectedCategories: CategoryKey[];
+  selectedCategories: string[];
 
   categories: Record<
     CategoryKey,
