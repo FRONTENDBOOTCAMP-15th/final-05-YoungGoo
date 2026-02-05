@@ -1,4 +1,4 @@
-export const productDetailMock: SupplementItem = {
+export const productDetailMock = {
   _id: '1',
   name: '루테인 플러스',
   summary: '눈 건강에 도움을 줄 수 있는 건강기능식품',
