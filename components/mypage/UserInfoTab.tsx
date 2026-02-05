@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import TabCard from './TabCard';
 import type { UserInfo } from '@/types/mypage';
+import Dropdown from '@/components/common/Dropdown';
+import { GENDER_OPTIONS } from '@/lib/mypage/constants';
 
 interface UserInfoTabProps {
   userInfo: UserInfo;
@@ -65,21 +67,19 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
               <input
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
+                min={0}
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: e.target.value })}
               />
             </div>
             <div className="flex flex-col gap-2 flex-1">
               <label className="text-yg-primary font-semibold">성별</label>
-              <select
-                className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
+              <Dropdown
+                options={GENDER_OPTIONS}
                 value={formData.gender}
-                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-              >
-                <option value="남성">남성</option>
-                <option value="여성">여성</option>
-                <option value="기타">기타</option>
-              </select>
+                onChange={(value) => setFormData({ ...formData, gender: value })}
+                className="[&>button]:py-3 [&>button]:px-5"
+              />
             </div>
           </div>
           <div className="flex gap-4">
@@ -88,6 +88,7 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
               <input
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
+                min={45}
                 value={formData.height}
                 onChange={(e) => setFormData({ ...formData, height: e.target.value })}
               />
@@ -97,6 +98,7 @@ export default function UserInfoTab({ userInfo, onSave }: UserInfoTabProps) {
               <input
                 type="number"
                 className="px-5 py-3 shadow-lg rounded-[50px] border border-yg-primary"
+                min={1}
                 value={formData.weight}
                 onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
               />

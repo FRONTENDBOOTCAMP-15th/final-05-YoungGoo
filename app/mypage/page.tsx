@@ -1,6 +1,6 @@
 'use client';
 import '@/app/globals.css';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/actions/auth';
 import { updateUserInfo } from '@/actions/mypage';
@@ -18,8 +18,22 @@ export default function MyPage() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const resetUser = useUserStore((state) => state.resetUser);
+  const hydrated = useUserStore((state) => state.hydrated);
 
-  // 사용자 정보 상태
+  // state hooks
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [activeTab, setActiveTab] = useState<TabType>('info');
+  const [subscriptionInfo] = useState<SubscriptionInfo>({
+    isSubscribed: true,
+    productName: '그린몬스터 다이어트 스페셜 2',
+    dosage: '900mg 112정',
+    paymentDate: '2026.01.15',
+    nextPaymentDate: '2026.02.15',
+  });
+
+  // 조건부 return으로 인한 오류 방지
   const userInfo = useMemo<UserInfo>(
     () => ({
       name: user?.name || '기본 이름',
@@ -32,33 +46,33 @@ export default function MyPage() {
     [user]
   );
 
-  // 구독 정보 상태
-  const [subscriptionInfo] = useState<SubscriptionInfo>({
-    isSubscribed: true,
-    productName: '그린몬스터 다이어트 스페셜 2',
-    dosage: '900mg 112정',
-    paymentDate: '2026.01.15',
-    nextPaymentDate: '2026.02.15',
-  });
+  // 로그인 체크
+  useEffect(() => {
+    if (hydrated && !user) {
+      alert('로그인이 필요한 서비스입니다.');
+      router.replace('/login');
+    }
+  }, [hydrated, user, router]);
 
-  // 로그아웃 모달 상태
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  // 회원탈퇴 모달 상태
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteConfirmText, setDeleteConfirmText] = useState('');
-
- // 탭 상태
- const [activeTab, setActiveTab] = useState<TabType>('info');
+  // 조건부 return으로 인한 오류 방지
+  if (!hydrated || !user) {
+    return (
+      <div className="w-full h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-yg-primary mb-4"></div>
+          <p className="text-lg text-yg-darkgray">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
  // 사용자 정보 수정 저장
   const handleSaveUserInfo = async (info: UserInfo) => {
-    // 1. user._id 확인
     if (!user?._id) {
       alert('사용자 정보를 찾을 수 없습니다.');
       return;
     }
-    // 2. 사용자 정보 수정
+
     try {
       const result = await updateUserInfo(user._id, {
         name: info.name,
@@ -68,22 +82,18 @@ export default function MyPage() {
         weight: info.weight,
       });
 
-      // 인증 만료
       if (result.ok === 0 && result.message?.includes('인증')) {
         alert(result.message);
         await handleLogout();
         return;
       }
 
-      // 실패
       if (result.ok === 0) {
         alert(result.message);
         return;
       }
 
-      // 성공
       if (result.ok === 1 && result.item) {
-        console.log('수정 성공!');
         setUser({
           ...user,
           name: result.item.name,
@@ -121,7 +131,6 @@ export default function MyPage() {
       return;
     }
 
-    // user 및 _id 확인
     if (!user?._id) {
       console.error(' user 또는 _id 없음:', user);
       alert('사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.');
@@ -141,12 +150,10 @@ export default function MyPage() {
     }
   };
 
-  // 설문 데이터
-  const surveys = [
-    { id: 1, title: '건강 설문 #3', date: '2026.01.15' },
-    { id: 2, title: '건강 설문 #2', date: '2025.01.10' },
-    { id: 3, title: '건강 설문 #1', date: '2024.01.05' },
-  ];
+  // 설문 기록 상세 보기
+  const handleSurveyClick = (targetId: string) => {
+    router.push(`/survey/history/${targetId}`);
+  };
 
   return (
     <div className="w-full min-h-screen bg-white overflow-x-hidden">
@@ -169,7 +176,7 @@ export default function MyPage() {
             {activeTab === 'subscription' && <SubscriptionTab subscriptionInfo={subscriptionInfo} onNavigateToSubscription={() => router.push('/subscription')} />}
             
             {/* 설문 정보 탭 */}
-            {activeTab === 'survey' && <SurveyTab surveys={surveys} onSurveyClick={() => router.push('/survey/result')} />}
+            {activeTab === 'survey' && <SurveyTab onSurveyClick={handleSurveyClick} />}
           </div>
         </div>
       </main>

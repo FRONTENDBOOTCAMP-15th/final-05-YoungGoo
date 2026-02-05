@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import * as PortOne from '@portone/browser-sdk/v2';
 import ItemList from '@/components/subscription/ItemList';
 import SectionCard from '@/components/subscription/SectionCard';
-import Dropdown from '@/components/subscription/Dropdown';
+import Dropdown from '@/components/common/Dropdown';
 import EditableInfoSection from '@/components/subscription/EditableInfoSection';
 import CouponPointSection from '@/components/subscription/CouponPointSection';
 import useUserStore from '@/store/userStore';

@@ -7,12 +7,14 @@ import useSWRMutation from 'swr/mutation';
 
 import { getProducts } from '@/lib/api/products';
 import { postAiRecommend } from '@/lib/api/ai';
+import { saveSurveyToServer } from '@/lib/api/survey';
 
 import type { SupplementItem } from '@/types/product';
 import type { SurveyResultPayload } from '@/types/survey';
 import type { AiRecommendRequest } from '@/types/ai';
 
 import { SURVEY_RESULT_PAYLOAD_KEY } from '@/app/survey/constants/storage';
+import useUserStore from '@/store/userStore';
 
 import ResultShell from '@/components/survey/result/ResultShell';
 import ConditionSummaryCard from '@/components/survey/result/ConditionSummaryCard';
@@ -61,8 +63,10 @@ function getRecommendCount(selectedCategories: unknown): number {
 
 export default function SurveyResultPage() {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
 
   const [payload, setPayload] = useState<SurveyResultPayload | null | undefined>(undefined);
+  const hasSavedHistoryRef = useRef(false);
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -224,6 +228,38 @@ export default function SurveyResultPage() {
     // AI 미완료 → fallback 유지
     return fallbackSupplements;
   }, [aiError, aiData, products, fallbackSupplements]);
+
+  // 설문 기록 저장 (finalSupplements가 로드되면 자동 저장)
+  useEffect(() => {
+    if (!finalSupplements.length || !payload || !user) return;
+    
+    const currentSurveyId = payload.createdAt; // payload의 생성 시간을 ID로 사용
+    
+    if (!currentSurveyId) return; // createdAt이 없으면 중단
+    
+    // 이미 저장했는지 체크 (localStorage 사용 - 새 탭에서도 유지)
+    const savedSurveyId = localStorage.getItem('lastSavedSurveyId');
+    
+    // 조건: 한 번도 저장 안 했거나, 다른 설문인 경우만 저장
+    if (!hasSavedHistoryRef.current && savedSurveyId !== currentSurveyId) {
+      saveSurveyToServer(payload, finalSupplements)
+        .then((result) => {
+          console.log('📥 서버 응답 전체:', result);
+          if (result.ok === 1) {
+            console.log('설문 기록 서버 저장 완료');
+            // 저장 성공하면 이 설문의 ID를 기록
+            localStorage.setItem('lastSavedSurveyId', currentSurveyId);
+          } else {
+            console.error('설문 기록 저장 실패:', result.message);
+            console.error('에러 상세:', result);
+          }
+        })
+        .catch((error) => {
+          console.error('설문 기록 저장 오류:', error);
+        });
+      hasSavedHistoryRef.current = true;
+    }
+  }, [finalSupplements, payload, user]);
 
   const summaryText = aiError ? '답변을 생성하는 데 문제가 발생했어요. 잠시 후 다시 시도해주세요.' : (aiData?.summary ?? FALLBACK_SUMMARY);
 
