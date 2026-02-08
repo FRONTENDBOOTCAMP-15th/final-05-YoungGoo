@@ -1,6 +1,8 @@
 import { MongoClient } from 'mongodb';
 import 'dotenv/config';
 
+// 실행방법 : node scripts/seed.js 실행 시 몽고DB에 데이터 초기화 후 수정된 현재 데이터 삽입
+
 // 카테고리별 이미지 맵
 const categoryImages = {
   diet: '/images/category/diet.png',
