@@ -68,7 +68,7 @@ export async function login(state: LoginActionState, formdata: FormData): Promis
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 15, // 15분
+        maxAge: 60 * 30, // 30분
       });
 
       cookieStore.set('refreshToken', refreshToken, {
