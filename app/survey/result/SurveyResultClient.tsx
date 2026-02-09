@@ -265,6 +265,7 @@ export default function SurveyResultPage() {
 
   const handleSubscribe = () => {
     if (finalSupplements.length === 0) return;
+    console.log('🔍 finalSupplements:', finalSupplements);
     saveRecommendedProducts(finalSupplements);
     router.push('/subscription');
   };
