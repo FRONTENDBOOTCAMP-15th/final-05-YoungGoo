@@ -195,7 +195,7 @@ export default function SurveyResultPage() {
 
   // 성공 시 top3 순서로 정렬 + reason 반영
   const finalSupplements: Supplement[] = useMemo(() => {
-    // AI 실패 → 추천 리스트 표시하지 않음
+    // AI 실패 시 추천 리스트 표시하지 않음
     if (aiError) return [];
 
     // AI 성공 시
@@ -225,38 +225,36 @@ export default function SurveyResultPage() {
       if (result.length > 0) return result;
     }
 
-    // AI 미완료 → fallback 유지
+    // AI 미완료 시 fallback 유지
     return fallbackSupplements;
   }, [aiError, aiData, products, fallbackSupplements]);
+
+  // 질문용 top3 변환
+  const top3ForAiQuestion = useMemo(
+    () =>
+      finalSupplements.slice(0, 3).map((s) => ({
+        name: s.name,
+        description: s.description,
+      })),
+    [finalSupplements]
+  );
 
   // 설문 기록 저장 (finalSupplements가 로드되면 자동 저장)
   useEffect(() => {
     if (!finalSupplements.length || !payload || !user) return;
-    
-    const currentSurveyId = payload.createdAt; // payload의 생성 시간을 ID로 사용
-    
-    if (!currentSurveyId) return; // createdAt이 없으면 중단
-    
-    // 이미 저장했는지 체크 (localStorage 사용 - 새 탭에서도 유지)
+
+    const currentSurveyId = JSON.stringify(payload);
+
     const savedSurveyId = localStorage.getItem('lastSavedSurveyId');
-    
-    // 조건: 한 번도 저장 안 했거나, 다른 설문인 경우만 저장
+
     if (!hasSavedHistoryRef.current && savedSurveyId !== currentSurveyId) {
       saveSurveyToServer(payload, finalSupplements)
         .then((result) => {
-          console.log('📥 서버 응답 전체:', result);
           if (result.ok === 1) {
-            console.log('설문 기록 서버 저장 완료');
-            // 저장 성공하면 이 설문의 ID를 기록
             localStorage.setItem('lastSavedSurveyId', currentSurveyId);
-          } else {
-            console.error('설문 기록 저장 실패:', result.message);
-            console.error('에러 상세:', result);
           }
         })
-        .catch((error) => {
-          console.error('설문 기록 저장 오류:', error);
-        });
+        .catch(() => {});
       hasSavedHistoryRef.current = true;
     }
   }, [finalSupplements, payload, user]);
@@ -289,10 +287,8 @@ export default function SurveyResultPage() {
             <p className="mt-1 text-sm font-normal text-yg-darkgray">AI가 분석한 맞춤 영양제 {Math.min(recommendCount, MAX_RECOMMEND_COUNT)}가지</p>
           </div>
 
-          {/* 로딩 (products 기준) */}
           {isLoading && <div className="rounded-2xl border border-yg-lightgray bg-white p-6 text-sm text-yg-darkgray shadow-sm">추천 영양제를 불러오는 중이에요...</div>}
 
-          {/* 에러 (products 기준) */}
           {!isLoading && isError && (
             <div className="rounded-2xl border border-yg-lightgray bg-white p-6 shadow-sm">
               <p className="text-sm text-yg-darkgray">추천 영양제를 불러오지 못했어요.</p>
@@ -302,10 +298,8 @@ export default function SurveyResultPage() {
             </div>
           )}
 
-          {/* 정상 */}
           {!isLoading && !isError && (
             <>
-              {/* AI 실패 UI */}
               {aiError ? (
                 <div className="rounded-2xl border border-yg-lightgray bg-white p-6 shadow-sm">
                   <p className="text-sm text-yg-darkgray">AI 추천을 생성하는 데 문제가 발생했어요. 잠시 후 다시 시도하거나, 설문을 다시 진행해 주세요.</p>
@@ -337,7 +331,7 @@ export default function SurveyResultPage() {
           )}
         </section>
 
-        <AiQuestion />
+        <AiQuestion payloadSummary={summaryText} top3Products={top3ForAiQuestion} />
       </ResultShell>
 
       <SubscribeButton onClick={handleSubscribe} />
