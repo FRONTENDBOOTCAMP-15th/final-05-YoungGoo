@@ -17,6 +17,7 @@ export async function signup(state: UserActionState, formData: FormData): Promis
       name: formData.get('name'),
       email: formData.get('email'),
       password: formData.get('password'),
+      phone: formData.get('phone'),
     };
 
     res = await fetch(`${API_URL}/users`, {
