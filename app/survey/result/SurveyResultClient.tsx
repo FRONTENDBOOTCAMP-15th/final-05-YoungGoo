@@ -240,16 +240,32 @@ export default function SurveyResultPage() {
     [finalSupplements]
   );
 
+  const summaryText = useMemo(() => {
+    if (aiError) return '답변을 생성하는 데 문제가 발생했어요. 잠시 후 다시 시도해주세요.';
+    return aiData?.summary ?? FALLBACK_SUMMARY;
+  }, [aiError, aiData]);
+
   // 설문 기록 저장 (finalSupplements가 로드되면 자동 저장)
   useEffect(() => {
     if (!finalSupplements.length || !payload || !user) return;
 
-    const currentSurveyId = JSON.stringify(payload);
+    // AI 로딩 중이면 대기
+    if (isAiLoading) {
+      console.log('⏳ AI 응답 대기 중... (로딩)');
+      return;
+    }
 
+    // AI 데이터가 없고 에러도 없으면 아직 완료 안 됨
+    if (!aiData && !aiError) {
+      console.log('⏳ AI 응답 대기 중... (데이터 없음)');
+      return;
+    }
+
+    const currentSurveyId = JSON.stringify(payload);
     const savedSurveyId = localStorage.getItem('lastSavedSurveyId');
 
     if (!hasSavedHistoryRef.current && savedSurveyId !== currentSurveyId) {
-      saveSurveyToServer(payload, finalSupplements)
+      saveSurveyToServer(payload, finalSupplements, summaryText)
         .then((result) => {
           if (result.ok === 1) {
             localStorage.setItem('lastSavedSurveyId', currentSurveyId);
@@ -258,9 +274,7 @@ export default function SurveyResultPage() {
         .catch(() => {});
       hasSavedHistoryRef.current = true;
     }
-  }, [finalSupplements, payload, user]);
-
-  const summaryText = aiError ? '답변을 생성하는 데 문제가 발생했어요. 잠시 후 다시 시도해주세요.' : (aiData?.summary ?? FALLBACK_SUMMARY);
+  }, [finalSupplements, payload, user, summaryText, aiData, aiError, isAiLoading]); 
 
   const handleSubscribe = () => {
     if (finalSupplements.length === 0) return;
