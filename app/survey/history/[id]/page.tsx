@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getSurveyByIdFromServer, type SurveyHistoryItem } from '@/lib/api/survey';
 
@@ -8,8 +8,22 @@ import ResultShell from '@/components/survey/result/ResultShell';
 import ConditionSummaryCard from '@/components/survey/result/ConditionSummaryCard';
 import SupplementCard, { type Supplement } from '@/components/survey/result/SupplementCard';
 import AiQuestion from '@/components/survey/result/AiQuestion';
+import SubscribeButton from '@/components/survey/result/SubscribeButton';
 
-const TEMP_SUMMARY = '설문 결과를 기반으로 카테고리별 추천 영양제를 준비했어요.';
+const FALLBACK_SUMMARY = '설문 결과를 기반으로 카테고리별 추천 영양제를 준비했어요.';
+const RECOMMENDED_PRODUCTS_KEY = 'recommendedProducts';
+
+function saveRecommendedProducts(supplements: Supplement[]) {
+  const recommendedProducts = supplements.map((item) => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    description: item.description,
+    imageUrl: item.imageUrl,
+  }));
+
+  sessionStorage.setItem(RECOMMENDED_PRODUCTS_KEY, JSON.stringify(recommendedProducts));
+}
 
 export default function SurveyHistoryDetailPage() {
   const router = useRouter();
@@ -50,28 +64,31 @@ export default function SurveyHistoryDetailPage() {
     router.push('/mypage');
   };
 
-  const supplements: Supplement[] = useMemo(() => {
-    if (!historyData) return [];
+  const handleSubscribe = () => {
+    if (!historyData || supplements.length === 0) return;
+    saveRecommendedProducts(supplements);
+    router.push('/subscription');
+  };
 
-    return historyData.memo.supplements.map((item) => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      description: item.description,
-      tags: [],
-      badge: '추천',
-      imageUrl: item.imageUrl,
-    }));
-  }, [historyData]);
+  const supplements: Supplement[] = !historyData
+    ? []
+    : historyData.memo.supplements.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        description: item.description,
+        tags: [],
+        badge: '추천',
+        imageUrl: item.imageUrl,
+      }));
 
-  const top3Products = useMemo(
-    () =>
-      supplements.slice(0, 3).map((s) => ({
-        name: s.name,
-        description: s.description,
-      })),
-    [supplements]
-  );
+  const top3Products = supplements.slice(0, 3).map((s) => ({
+    name: s.name,
+    description: s.description,
+  }));
+
+  // summary 가져오기
+  const summaryText = historyData?.memo.summary || FALLBACK_SUMMARY;
 
   if (isLoading || !historyData) {
     return (
@@ -96,7 +113,7 @@ export default function SurveyHistoryDetailPage() {
           </button>
         </div>
 
-        <ConditionSummaryCard summary={TEMP_SUMMARY} />
+        <ConditionSummaryCard summary={summaryText} />
 
         <section className="mb-10">
           <div className="mb-4">
@@ -115,8 +132,13 @@ export default function SurveyHistoryDetailPage() {
           )}
         </section>
 
-        <AiQuestion payloadSummary={TEMP_SUMMARY} top3Products={top3Products} />
+        <AiQuestion payloadSummary={summaryText} top3Products={top3Products} />
       </ResultShell>
+
+      {/* 구독하기 버튼 추가 */}
+      {supplements.length > 0 && (
+        <SubscribeButton onClick={handleSubscribe} />
+      )}
     </>
   );
 }
