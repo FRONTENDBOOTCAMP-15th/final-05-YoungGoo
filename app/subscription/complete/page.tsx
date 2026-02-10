@@ -1,6 +1,6 @@
 'use client';
 import '@/app/globals.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { addSubscription } from '@/lib/api/subscription';
 import { sendPaymentConfirmationEmail } from '@/lib/api/email';
@@ -52,18 +52,22 @@ export default function PaymentComplete() {
   const [paymentInfo] = useState<PaymentInfo | null>(getPaymentInfo);
   const [subscriptionAdded, setSubscriptionAdded] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const hasCalledSubscription = useRef(false); // 중복 실행 방지
 
   // 구독 추가
   useEffect(() => {
     const addSubscriptionData = async () => {
-      if (!paymentInfo || subscriptionAdded) return;
+      // 중복 실행 방지
+      if (!paymentInfo || subscriptionAdded || hasCalledSubscription.current) return;
+      
+      hasCalledSubscription.current = true; // 실행 플래그 설정
 
       const products = paymentInfo.products.map((p) => ({
         productId: String(p.id),
         name: p.name,
         price: p.price,
         imageUrl: p.imageUrl,
-        quantity: p.quantity, // 수량 추가
+        quantity: p.quantity,
       }));
 
       const result = await addSubscription(products);

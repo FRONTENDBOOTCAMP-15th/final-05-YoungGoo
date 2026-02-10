@@ -27,7 +27,7 @@ export default function Subscription() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('');
   const [ordererInfo, setOrdererInfo] = useState<OrdererInfo>({ 
     name: user?.name || '사용자 이름',
-    phone: user?.phone || '010-9977-6874',
+    phone: user?.phone || '010-0000-0000',
     email: user?.email || '사용자 이메일' 
   });
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({ 
