@@ -115,7 +115,7 @@ export default function SurveyHistoryDetailPage() {
           )}
         </section>
 
-        <AiQuestion payloadSummary={TEMP_SUMMARY} top3Products={top3Products} />
+        {/* <AiQuestion payloadSummary={TEMP_SUMMARY} top3Products={top3Products} payloadSummary={summaryText} top3Products={top3ForAiQuestion} /> */}
       </ResultShell>
     </>
   );
