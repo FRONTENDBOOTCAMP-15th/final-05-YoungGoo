@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getSurveyByIdFromServer, type SurveyHistoryItem } from '@/lib/api/survey';
 
@@ -35,6 +35,7 @@ export default function SurveyHistoryDetailPage() {
       } else {
         router.replace('/mypage');
       }
+
       setIsLoading(false);
     };
 
@@ -49,6 +50,29 @@ export default function SurveyHistoryDetailPage() {
     router.push('/mypage');
   };
 
+  const supplements: Supplement[] = useMemo(() => {
+    if (!historyData) return [];
+
+    return historyData.memo.supplements.map((item) => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      description: item.description,
+      tags: [],
+      badge: '추천',
+      imageUrl: item.imageUrl,
+    }));
+  }, [historyData]);
+
+  const top3Products = useMemo(
+    () =>
+      supplements.slice(0, 3).map((s) => ({
+        name: s.name,
+        description: s.description,
+      })),
+    [supplements]
+  );
+
   if (isLoading || !historyData) {
     return (
       <div className="w-full h-screen bg-white flex items-center justify-center">
@@ -59,16 +83,6 @@ export default function SurveyHistoryDetailPage() {
       </div>
     );
   }
-
-  const supplements: Supplement[] = historyData.memo.supplements.map((item) => ({
-    id: item.id,
-    name: item.name,
-    price: item.price,
-    description: item.description,
-    tags: [],
-    badge: '추천',
-    imageUrl: item.imageUrl,
-  }));
 
   return (
     <>
@@ -101,7 +115,7 @@ export default function SurveyHistoryDetailPage() {
           )}
         </section>
 
-        {/* <AiQuestion payloadSummary={summaryText} top3Products={top3ForAiQuestion} /> */}
+        <AiQuestion payloadSummary={TEMP_SUMMARY} top3Products={top3Products} />
       </ResultShell>
     </>
   );
