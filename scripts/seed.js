@@ -8,7 +8,7 @@ const categoryImages = {
   diet: '/images/category/diet.png',
   eye: '/images/category/eye_health.png',
   gut: '/images/category/gut_health.png',
-  immune_fatigue: '/images/category/immune_energe.png',
+  immune_fatigue: '/images/category/immune_energy.png',
   skin_hair: '/images/category/skin_hair.png',
   women: '/images/category/womens_health.png',
   brain: '/images/category/brain_focus.png',
