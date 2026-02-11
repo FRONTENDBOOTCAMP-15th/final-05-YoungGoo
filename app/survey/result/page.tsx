@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     url: 'https://final-05-project.vercel.app/survey/result',
     images: [
       {
-        url: '/og/result.png',
+        url: '/og/global.png',
         width: 1200,
         height: 630,
         alt: '설문 결과 썸네일',
