@@ -100,7 +100,28 @@ export default function Subscription() {
   };
 
   const toggleCheck = (id: number) => {
-    setProducts(products.map((p) => (p.id === id ? { ...p, checked: !p.checked } : p)));
+    const newProducts = products.map((p) => (p.id === id ? { ...p, checked: !p.checked } : p));
+    setProducts(newProducts);
+    
+    // 체크 변경 후 할인 금액 재조정
+    const newProductTotal = newProducts
+      .filter((p) => p.checked)
+      .reduce((sum, p) => sum + p.price * p.quantity, 0);
+    
+    // 쿠폰 코드가 입력된 상태라면 항상 재계산
+    if (coupon !== '') {
+      const newDiscount = Math.floor(newProductTotal * 0.5);
+      setCouponDiscount(newDiscount);
+    }
+    
+    // 포인트가 (상품 가격 - 쿠폰 할인)보다 크면 재조정
+    const newCouponDiscount = coupon !== '' ? Math.floor(newProductTotal * 0.5) : couponDiscount;
+    const afterCoupon = Math.max(0, newProductTotal - newCouponDiscount);
+    if (pointUsed > afterCoupon) {
+      const newPointUsed = Math.min(availablePoints, afterCoupon);
+      setPointUsed(newPointUsed);
+      setPoint(newPointUsed.toString());
+    }
   };
 
   const increaseQuantity = (id: number) => {
@@ -121,7 +142,9 @@ export default function Subscription() {
   };
 
   const calculateFinalTotal = () => {
-    return calculateProductTotal() - couponDiscount - pointUsed + calculateShippingFee();
+    const productTotal = calculateProductTotal();
+    const afterDiscount = Math.max(0, productTotal - couponDiscount - pointUsed);
+    return afterDiscount + calculateShippingFee();
   };
 
   const applyCoupon = () => {
@@ -131,7 +154,8 @@ export default function Subscription() {
     }
 
     if (coupon === 'WELCOME10') {
-      const discount = Math.floor(calculateProductTotal() * 0.5);
+      const productTotal = calculateProductTotal();
+      const discount = Math.floor(productTotal * 0.5);
       setCouponDiscount(discount);
       alert(`쿠폰이 적용되었습니다! ${discount.toLocaleString()}원 할인`);
     } else {
@@ -140,8 +164,9 @@ export default function Subscription() {
   };
 
   const useAllPoints = () => {
-    const productTotal = calculateProductTotal() - couponDiscount;
-    const maxUsablePoints = Math.min(availablePoints, productTotal);
+    const productTotal = calculateProductTotal();
+    const afterCoupon = Math.max(0, productTotal - couponDiscount);
+    const maxUsablePoints = Math.min(availablePoints, afterCoupon);
     setPointUsed(maxUsablePoints);
     setPoint(maxUsablePoints.toString());
     alert(`${maxUsablePoints.toLocaleString()}원 포인트가 적용되었습니다!`);
@@ -149,13 +174,14 @@ export default function Subscription() {
 
   const handlePointChange = (value: string) => {
     const numValue = parseInt(value) || 0;
-    const productTotal = calculateProductTotal() - couponDiscount;
+    const productTotal = calculateProductTotal();
+    const afterCoupon = Math.max(0, productTotal - couponDiscount);
 
     if (numValue > availablePoints) {
       alert('보유 포인트를 초과할 수 없습니다.');
       return;
     }
-    if (numValue > productTotal) {
+    if (numValue > afterCoupon) {
       alert('상품 금액을 초과할 수 없습니다.');
       return;
     }
@@ -183,27 +209,14 @@ export default function Subscription() {
       return;
     }
 
+    const finalTotal = calculateFinalTotal();
+    if (finalTotal < 0) {
+      alert('결제 금액이 0원 미만입니다. 상품을 다시 확인해주세요.');
+      return;
+    }
+
     // 새로운 결제 시작: 이메일 플래그 초기화
     sessionStorage.removeItem('paymentEmailSent');
-
-    /* 테스트용 코드 (주석처리됨)
-    // 테스트용: 결제 과정 스킵
-    const mockPaymentId = `test-payment-${crypto.randomUUID()}`;
-    
-    sessionStorage.setItem('paymentInfo', JSON.stringify({ 
-      paymentId: mockPaymentId, 
-      products: selectedProducts, 
-      totalAmount: calculateFinalTotal(), 
-      paymentMethod: paymentMethod, 
-      ordererInfo: ordererInfo, 
-      shippingInfo: shippingInfo, 
-      couponDiscount: couponDiscount, 
-      pointUsed: pointUsed, 
-      shippingFee: calculateShippingFee() 
-    }));
-
-    router.push('/subscription/complete');
-    */
 
     // 실제 결제 코드
     const orderName = selectedProducts.length === 1 ? selectedProducts[0].name : `${selectedProducts[0].name} 외 ${selectedProducts.length - 1}건`;
@@ -214,7 +227,7 @@ export default function Subscription() {
         channelKey: 'channel-key-ebe7daa6-4fe4-41bd-b17d-3495264399b5',
         paymentId: `payment-${crypto.randomUUID()}`,
         orderName: orderName,
-        totalAmount: calculateFinalTotal(),
+        totalAmount: finalTotal,
         currency: 'CURRENCY_KRW' as const,
         payMethod: paymentMethod as 'CARD' | 'VIRTUAL_ACCOUNT' | 'TRANSFER',
         customer: {
@@ -242,7 +255,7 @@ export default function Subscription() {
       sessionStorage.setItem('paymentInfo', JSON.stringify({ 
         paymentId: response.paymentId, 
         products: selectedProducts, 
-        totalAmount: calculateFinalTotal(), 
+        totalAmount: finalTotal, 
         paymentMethod: paymentMethod, 
         ordererInfo: ordererInfo, 
         shippingInfo: shippingInfo, 
