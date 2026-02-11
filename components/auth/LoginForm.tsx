@@ -23,6 +23,7 @@ export default function LoginForm() {
       setUser({
         _id: userState.item._id,
         name: userState.item.name,
+        email: userState.item.email,
       });
       alert(`안녕하세요, ${userState.item.name}님!\n로그인이 완료되었습니다!`);
       router.replace('/');
