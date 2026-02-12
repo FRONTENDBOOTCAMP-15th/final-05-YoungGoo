@@ -20,7 +20,7 @@
 <br>
 
 ## 🕖기간
-2025.1.14 ~ 2025.2.13
+**2026.1.14 ~ 2026.2.13**
 
 <br>
 <br>
@@ -39,8 +39,19 @@
 <br>
 <br>
 
-## 🛠️ 기술스택  
-![다이어그램](https://cdn.discordapp.com/attachments/1402552622879215727/1441691012031451156/aa334db4024033fc.png?ex=6922b6e2&is=69216562&hm=95743d768c541f71b2100d3a7e26133ccce1b5206afaff30afa429aab90b3a4c&)
+## 🛠 기술 스택
+
+| 항목 | 내용 |
+|------|------|
+| **프레임워크 & 코어** | <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/> <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/> |
+| **언어** | <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/> |
+| **스타일링** | <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/> |
+| **상태 관리** | <img src="https://img.shields.io/badge/Zustand-443E38?style=for-the-badge"/> |
+| **툴** | <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white"/> <img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black"/> |
+| **배포** | <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"/> |
+| **커뮤니케이션** | <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"/> <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/> |
+
+
 
 
 <br>
@@ -55,13 +66,15 @@
 - 공통 컴포넌트
 - 메인 페이지
 - 로그인 페이지
-- 회원가입 페이
+- 회원가입 페이지
 - 설문조사 페이지
 - AI 추천 결과 페이지
 - 상품 리스트 페이지
 - 상품 상세 페이지
 - 결제/구독 페이지
 - 마이페이지
+  <br>
+  <br>
 기능 단위로 작업을 분리하여 개발
 
 <hr>
@@ -338,151 +351,111 @@
 
 
  **🪢시스템 흐름도**
- 
- <img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/f8a30950-4116-47ce-b3ec-a7eeb0d57342" />
 
+<img width="1307" height="792" alt="화면 흐름도 (2)" src="https://github.com/user-attachments/assets/660ee6db-2116-4ebc-b444-b6f890a464a2" />
 
+<br>
+<br>
 <br>
 <br>
 
 **🗂️폴더 구조**
-
+```bash
+📁 final-05-YoungGoo/
+│
+├── 📁 app/                              # Next.js App Router
+│   │
+│   ├── 📁 (auth)/                       # 인증 라우트 그룹
+│   │   ├── 📁 login/
+│   │   │   ├── 📄 page.tsx              # 로그인 페이지
+│   │   │   └── 📁 kakao/                # 카카오 콜백
+│   │   │       └── 📄 page.tsx
+│   │   └── 📁 signup/
+│   │       └── 📄 page.tsx              # 회원가입 페이지
+│   │
+│   ├── 📁 products/                     # 상품
+│   │   ├── 📄 page.tsx                  # 상품 목록
+│   │   └── 📁 [id]/                     # 상품 상세
+│   │       ├── 📄 page.tsx
+│   │       ├── 📄 loading.tsx
+│   │       └── 📄 error.tsx
+│   │
+│   ├── 📁 survey/                       # AI 설문
+│   │   ├── 📄 page.tsx                  # 설문 시작
+│   │   ├── 📁 question/
+│   │   │   └── 📄 page.tsx              # 설문 질문
+│   │   ├── 📁 result/
+│   │   │   ├── 📄 page.tsx              # 설문 결과
+│   │   │   └── 📄 SurveyResultClient.tsx
+│   │   └── 📁 history/
+│   │       └── 📁 [id]/
+│   │           └── 📄 page.tsx          # 설문 이력 상세
+│   │
+│   ├── 📁 subscription/                 # 구독
+│   │   ├── 📄 page.tsx
+│   │   └── 📁 complete/
+│   │       └── 📄 page.tsx
+│   │
+│   ├── 📁 mypage/                       # 마이페이지
+│   │   ├── 📄 page.tsx
+│   │   └── 📄 MyPageClient.tsx
+│   │
+│   ├── 📁 api/                          # API Route
+│   │   ├── 📁 ai/
+│   │   │   ├── 📁 answer/
+│   │   │   └── 📁 recommend/
+│   │   └── 📁 certify/
+│   │
+│   ├── 📄 layout.tsx
+│   └── 📄 page.tsx                      # 메인 페이지
+│
+├── 📁 components/                       # UI 컴포넌트
+│   ├── 📁 common/                       # 공통 UI
+│   ├── 📁 auth/                         # 로그인/회원가입
+│   ├── 📁 products/                     # 상품 관련 UI
+│   ├── 📁 survey/                       # 설문 UI
+│   │   ├── 📁 questions/
+│   │   └── 📁 result/
+│   ├── 📁 subscription/
+│   └── 📁 mypage/
+│
+├── 📁 hooks/                            # 커스텀 훅
+│   ├── useSurveyPayload.ts
+│   ├── useSurveySupplements.ts
+│   └── useSurveyAiQuestions.ts
+│
+├── 📁 lib/                              # API 통신 로직
+│   └── 📁 api/
+│       ├── products.ts
+│       ├── survey.ts
+│       ├── subscription.ts
+│       └── auth.ts
+│
+├── 📁 types/                            # 타입 정의
+│   ├── product.ts
+│   ├── survey.ts
+│   ├── subscription.ts
+│   └── auth.ts
+│
+├── 📁 store/                            # Zustand 상태관리
+│   └── userStore.ts
+│
+├── 📁 public/                           # 정적 파일
+│   ├── 📁 images/
+│   ├── 📁 icons/
+│   └── 📁 og/
+│
+└── 📄 README.md
+```
  
-📦 vanilla-07-promise              // 프로젝트 루트
-│
-├── 🗂️ .github                     // GitHub 워크플로우/Actions 등 자동화 설정
-├── 🗂️ .vscode                     // VSCode 편집기 설정
-│
-├── 📁 api                         // 서버/DB 관련 유틸리티 및 테스트용 리소스
-│   ├── 📁 bruno                   // Bruno API 테스트 파일
-│   └── 📁 dbinit                  // DB 초기화 스크립트
-│
-├── 📁 dist                        // Vite 빌드 결과물(배포 파일)
-├── 📁 node_modules                // npm 패키지들이 저장되는 폴더
-│
-├── 📁 public                      // 정적 리소스(빌드 없이 접근 가능)
-│   ├── 📁 assets                  // 이미지, CSS, 컴포넌트 등 모든 정적 자원
-│   │   ├── 🎨 components          // header, nav 등 공통 UI 컴포넌트 CSS
-│   │   │   ├── header.css
-│   │   │   └── nav.css
-│   │   │
-│   │   ├── 🎨 css                 // 전역 스타일 폴더
-│   │   │   └── 🎨 base            // reset/variables/theme 등 기초 스타일 파일
-│   │   │      ├── base.css
-│   │   │      ├── global.css
-│   │   │      ├── reset.css
-│   │   │      ├── theme.css
-│   │   │      └── variables.css
-│   │   │
-│   │   ├── 🖼️ images              // 모든 PNG/SVG 이미지 및 아이콘
-│   │   │   ├── detail / login / mybox-icons / nav-icons ...
-│   │   │   ├── trending-1.png ~ trending-10.png
-│   │   │   └── 다양한 SVG, PNG 파일들
-│   │   │
-│   │   └── 🎨 common.css          // 공통 스타일
-│   │
-│   └── 🖼️ vite.svg                // Vite 기본 아이콘
-│
-├── 📁 src                         // 실제 애플리케이션 로직이 들어가는 핵심 폴더
-│   ├── 📁 common                  // 공통 header/nav/토큰 관리/재사용 함수
-│   │   ├── header.html
-│   │   ├── header.ts
-│   │   ├── like.ts
-│   │   ├── nav.html
-│   │   ├── nav.ts
-│   │   ├── sub-section.ts
-│   │   └── token.ts
-│   │
-│   ├── 📁 components              // 재사용 가능한 UI 컴포넌트
-│   │   └── NoDataSearchPage.ts    // 검색에서 데이터 없을 때 보여줄 컴포넌트
-│   │
-│   ├── 📁 features                // 페이지(기능) 단위 모듈
-│   │   ├── 📁 detail              // 상세보기 페이지
-│   │   │   ├── detail.css
-│   │   │   ├── detail.html
-│   │   │   └── detail.ts
-│   │   │
-│   │   ├── 📁 home                // 홈 화면 기능
-│   │   │   ├── home.html
-│   │   │   ├── index.css
-│   │   │   ├── index.ts
-│   │   │   ├── top-author.css / top-author.html / top-author.ts
-│   │   │   ├── trending-brunch.css / trending-brunch.html / trending-brunch.ts
-│   │   │
-│   │   ├── 📁 login               // 로그인 페이지
-│   │   │   ├── login.css
-│   │   │   ├── login.html
-│   │   │   └── login.ts
-│   │   │
-│   │   ├── 📁 mybox               // 내보관함(My Box) 페이지
-│   │   │   ├── mybox.css
-│   │   │   ├── mybox.html
-│   │   │   ├── mybox.ts
-│   │   │   └── recent.ts
-│   │   │
-│   │   ├── 📁 mypage              // 마이페이지
-│   │   │   ├── mypage.css
-│   │   │   ├── mypage.html
-│   │   │   └── mypage.ts
-│   │   │
-│   │   ├── 📁 search              // 검색 기능
-│   │   │   ├── 📁 search-author   // 작가 검색
-│   │   │   ├── 📁 search-nodata   // 검색 결과 없을 때
-│   │   │   ├── 📁 search-result   // 검색 결과 페이지
-│   │   │   ├── search.css
-│   │   │   ├── search.html
-│   │   │   └── search.ts
-│   │   │
-│   │   ├── 📁 signup              // 회원가입 페이지
-│   │   │   ├── signup.css
-│   │   │   ├── signup.html
-│   │   │   └── signup.ts
-│   │   │
-│   │   ├── 📁 utils               // 공통 유틸리티 함수들
-│   │   │   ├── pages              // 페이징 처리 관련
-│   │   │   ├── auth.ts            // 인증 로직
-│   │   │   ├── axios.ts           // axios 인스턴스 설정
-│   │   │   ├── checklogin.ts      // 로그인 여부 확인
-│   │   │   └── types.ts           // 공통 타입
-│   │   │
-│   │   ├── 📁 write               // 글쓰기 페이지
-│   │   │   ├── write.css
-│   │   │   ├── write.html
-│   │   │   └── write.ts
-│   │   │
-│   │   └── 📁 writerhome          // 작가 홈(브런치 스타일)
-│   │       ├── writerhome.css
-│   │       ├── writerhome.html
-│   │       └── writerhome.ts
-│   │
-│   ├── 📁 types                   // 전역 타입 정의
-│   │   ├── mybox-type / mybox-type.ts
-│   │   ├── search-author-type / search-author-type.ts
-│   │   ├── search-result-type / search-result-type.ts
-│   │   ├── writerhome-type / writerhome-type.ts
-│   │   ├── apiClient.ts
-│   │   ├── postApi.ts
-│   │   └── upload.ts
-│   │
-│   ├── 💡 main.ts                 // 앱 진입 파일
-│   ├── 💡 counter.ts              // 예제용 코드(템플릿)
-│   ├── 🎨 style.css               // 전역 스타일
-│   └── 🖼️ typescript.svg          // TS 로고 이미지
-│
-├── ⚙️ .gitignore                  // Git에 포함하지 않을 파일 목록
-├── ⚙️ eslint.config.js            // ESLint 설정
-├── 📄 index.html                  // 프로젝트 기본 HTML
-├── 📦 package.json                // npm 패키지 설정 및 스크립트
-├── 📦 package-lock.json           // 패키지 버전 고정 파일
-├── ⚙️ prettier.config.js          // Prettier 코드 스타일 설정
-├── 📄 [README.md](http://readme.md/)                   // 프로젝트 설명 문서
-├── 📄 test.txt                    // 테스트 파일
-├── ⚙️ tsconfig.json               // TypeScript 설정
-└── ⚙️ vite.config.js              // Vite 번들 설정
+
 
 
 ## 🎬 기능 시연  
 - 배포 링크: [영구](https://final-05-project.vercel.app/)
+
+<img width="300" height="264" alt="스크린샷 2026-02-12 143830" src="https://github.com/user-attachments/assets/2681425b-3650-4029-8229-12457590150f" />
+
 
 <br>
 <br>
@@ -492,10 +465,10 @@
 
 | 이름👨‍👩‍👧‍👦 | 문제 상황 | 원인 추적 |해결 정리 |
 |:--:|:--|:--|:--|
-| **유진** |  | | |
-| **승준** |  | | |
-| **은재** |  |  | |
-| **수정** |  | | |
+| **유진** | 결제/구독 페이지에서 AI가 추천한 상품이 아닌 다른 상품이 표시되는 문제 발생  | 설문 결과 페이지에서 AI가 추천한 상품 정보를 sessionStorage에 저장하는 과정에서 해당 상품의 고유한 ID가 아닌 프론트엔드에서 부여한 index를  저장한 것으로 파악됨. 구독 페이지에서 이 index에 기반하여 백엔드 API 요청을 보내 그에 해당하는 id를 보유한 상품 정보를 받아옴. SurveyResultClient.tsx에서 추천 받은 Supplement를 다른 페이지에서도 불러오도록 매핑하는 과정에서 서버에 저장된 상품 객체 | 사용할 타입을 개선하여 프론트엔드에서 해당 상품이 가지는 index 가 아닌 서버에 저장된  item.id 를 사용 및 sessionstorage에 저장하여 공용으로 활용할 수 있게 개선함 |
+| **승준** | 새로고침 시 로그인 전 헤더가 깜빡이며 보이다가 로그인 후 헤더로 변경됨  | Zustand persist가 storage에서 상태를 복원하기 전에 첫 렌더링이 발생하여 초기값(null)으로 UI가 먼저 그려짐 | onRehydrateStorage로 복원 완료를 감지하는 hydrated 상태를 추가하여 복원 후에만 UI를 렌더링하도록 처리 |
+| **은재** | 설문 결과 페이지에서 데이터를 가져오기 위해 useEffect  내부에서 setState를 사용해 상품 데이터를 불러오는 과정에서 계속해서 경고 발생 | useEffect가 2번 실행될 수 있어 경고 노출, 결과 페이지에서 여러 과정이 겹쳐 setStaterk 연속 호출되어 연쇠 랜더링 경고 발생  |  데이터 패칭 방식을 바꾸어 SWR로 변경|
+| **수정** | 일부 상품 데이터가 안 나옴 | URL에 query parameter(seller_id) 필요 | URL 확인 후 query 포함 요청 |
 
 
 <br>
@@ -503,11 +476,10 @@
 
 
 
-## 💭 회고 및 느낀점
+| 이름👨‍👩‍👧‍👦 | 아쉬운 점  | 성장 경험  |
+| :-----------: | :--------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+|     **유진**    | 초기 데이터 흐름과 API 구조를 충분히 설계하지 못해 상태 관리와 상품 매핑 과정에서 여러 오류를 겪었다. 특히 sessionStorage와 localStorage를 혼용하면서 데이터 동기화 문제를 경험한 점이 아쉬웠다. | 설문·구독·결제가 유기적으로 연결되는 과정을 구현하며 상태 관리와 API 연동의 중요성을 깊이 이해하게 되었다. 기능 구현을 넘어 서비스 흐름 전체를 고려하는 시야를 갖게 된 경험이었다.   |
+|     **승준**    | PL로서 팀 전체의 흐름을 더욱 적극적으로 이끌지 못한 점이 아쉬웠다. 또한 코드에 대한 깊은 이해가 아직 부족하다는 점을 느꼈다.   | 팀원들과 협업하며 하나의 서비스를 완성해냈다는 점이 가장 큰 성장이다. 로그인·회원가입 기능을 구현하며 인증 흐름과 상태 관리 구조를 이해하게 되었고, 부족한 부분을 스스로 인지하고 보완하는 계기가 되었다. |
+|     **은재**    | 맡은 기능 구현에 집중하다 보니 다른 팀원의 작업을 충분히 확인하지 못했고, 이로 인해 디자인 통일 작업이 늦어져 일정이 지연된 점이 아쉬웠다.    | 기획 단계부터 참여하며 사용자 관점에서 서비스 흐름을 고민해볼 수 있었던 점이 의미 있었다. 기술을 실제로 적용하며 이해도를 높였고, 추가 학습을 통해 개발에 대한 흥미도 더욱 커졌다.    |
+|     **수정**    | 초기 설계 단계에서 데이터 구조와 반응형 UI를 충분히 고려하지 못해 중간 수정 작업이 많았던 점이 아쉬웠다.   | Product 파트를 맡아 데이터 흐름과 상태 관리를 깊이 이해하게 되었고, 오류를 직접 해결하며 문제 해결 능력이 향상되었다.   |
 
-| 이름👨‍👩‍👧‍👦 | 아쉬운 점 | 성장 경험 |
-|:--:|:--|:--|
-| **유진** |  |  |
-| **승준** | | |
-| **은재** |  |  |
-| **수정** |  |   |
