@@ -1,12 +1,11 @@
 
 # 5조 우유: 💊영구(영양제 구독)
+
 <br>
 
-사진영역
-<!-- <img width="900" height="200" alt="image" src="https://github.com/user-attachments/assets/1e85f3e5-3ef1-42fb-95e5-41894ce15479" /> -->
+<img width="950" height="530" alt="global" src="https://github.com/user-attachments/assets/a1650c9e-f46e-4908-8c29-48b2a821d1b0" />
 
-
-
+<br>
 <br>
 
 ## 🚀 프로젝트 개요  
@@ -27,12 +26,11 @@
 <br>
 
 ## 🧑‍💻 팀원 역할 및소개
-
-| <img src="https://github.com/user-attachments/assets/195ebe45-3b18-4285-ae05-0476f538d092" width="150"/> | <img src="https://github.com/user-attachments/assets/195f8051-bb99-48a6-8ef0-2c26110fc7aa" width="150"/> | <img src="https://github.com/user-attachments/assets/2529e66e-b59a-4b0d-932c-78fa90b33ca0" width="150"/> | <img src="https://github.com/user-attachments/assets/03f33f4a-2afa-4f51-bd7a-5964522483a7" width="150"/> |
+| <img width="220" src="https://github.com/user-attachments/assets/ef18f0f1-0bc2-4db2-8932-3932634f161d" /> | <img width="220" src="https://github.com/user-attachments/assets/bd5a64c8-9b6b-4ec3-8d66-b75771b4ca9e" /> | <img width="220" src="https://github.com/user-attachments/assets/00b76f24-1a47-4181-ab5a-787b30fb4d53" /> | <img width="220"  src="https://github.com/user-attachments/assets/c271bd28-98a7-4b69-9405-c3bc7eb29a8b" /> |
 |:--:|:--:|:--:|:--:|
-| **이유진** | **백승준** | **김은재** | **조수정** |
-| 조장(PM) | PL | 서기 | 발표 |
-| 결제/구독 및 마이 페이지  | 공통,메인 및 로그인/회원가입 페이지 | 설문,AI 추천 결과 페이지 | 상품 목록,상세 페이지 |
+| **이유진** | **백승준** | **김은재** | **장수정** |
+| 조장 (PM) | PL | 서기 | 발표 |
+| 결제/구독 및 마이페이지 | 공통·메인 및 로그인/회원가입 | 설문·AI 추천 결과 | 상품 목록·상세 |
 
 
 
@@ -54,21 +52,23 @@
 
 ### 📚작업 분배 방식
 **기능 단위 분리 방식**
+- 공통 컴포넌트
 - 메인 페이지
-- 상세 페이지
 - 로그인 페이지
-- 글쓰기 및 등록
-- 발견
-- 내 서랍 페이지
-- 작가 홈 페이지
+- 회원가입 페이
+- 설문조사 페이지
+- AI 추천 결과 페이지
+- 상품 리스트 페이지
+- 상품 상세 페이지
+- 결제/구독 페이지
+- 마이페이지
 기능 단위로 작업을 분리하여 개발
 
 <hr>
 
 **우선순위 기반 할당**
-- 필수 기능(글 검색, 관심 작가)
-- 선택 기능(텍스트 정렬)
-- 추가 기능(로그인 후 헤더에 사진 누를 시 수정)
+- 필수 기능(설문 결과 요약,구독 상태)
+- 선택 기능(소셜 로그인)
   
 <hr>
 
@@ -82,7 +82,7 @@
 ### 🗨️소통 및 이슈 관리 방법
 **소통 방식**
 - 메신저 기반 실시간 소통(디스코드)
-- 오전마다 데일리 스크럼 진행, 수업 이후 상황 공유
+- 오전9시,오후 5시 데일리 스크럼 진행
 
 <hr>
 
@@ -107,78 +107,228 @@
 
 ## ✨ 기능 소개 
 
-### 🎯메인 페이지
-- ✔️요즘 뜨는 브런치
-- ✔️Top 구독 작가
-<img width="300" height="433" alt="스크린샷 2025-11-22 182502" src="https://github.com/user-attachments/assets/8fc8a55a-1b6c-4c12-86c9-4d247c276e86" />
-<img width="300" height="450" alt="스크린샷 2025-11-23 222908" src="https://github.com/user-attachments/assets/3e37057a-709a-47f7-ad35-f462efed9d57" />
+### 🏠 메인 페이지
+
+- 💊 서비스 소개
+
+<table>
+<tr>
+<td>
+<img width="1883" height="908" alt="스크린샷 2026-02-12 113958" src="https://github.com/user-attachments/assets/bdc1f0e6-99ce-46ea-abb4-db7b22adeacf" />
 
 
-<hr>
 
-### 📚상세 페이지
-- ✔️구독 등록/취소
-- ✔️좋아요 등록/취소
-<img width="300" height="450" alt="스크린샷 2025-11-22 164958" src="https://github.com/user-attachments/assets/721a1b06-0bea-4a35-ab9a-55b7ebe3d3c7" />
-<img width="300" height="450" alt="스크린샷 2025-11-22 165308" src="https://github.com/user-attachments/assets/7a92415b-a398-4657-80db-fcca7670ab19" />
+</td>
+<td>
+<img width="1898" height="909" alt="스크린샷 2026-02-12 114027" src="https://github.com/user-attachments/assets/2825514e-88dd-4d21-83c1-3bba94d1a25b" />
+
+
+
+</td>
+</tr>
+</table>
+
 
 
 
 <hr>
 
 ### 🔓로그인 페이지
-- ✔️이메일 회원 가입(로그인)
-- ✔️마이페이지
-<img width="300" height="445" alt="스크린샷 2025-11-22 165115" src="https://github.com/user-attachments/assets/2ec3572f-9077-4ce9-816c-670fd20c573a" />
-<img width="300" height="450" alt="image" src="https://github.com/user-attachments/assets/c8367610-3d92-4ac9-a9fa-2ad283458511" />
+
+- 💊로그인 기능
+- 💊소셜 로그인
+<table>
+<tr>
+<td>
+
+<img width="1902" height="902" alt="스크린샷 2026-02-12 114111" src="https://github.com/user-attachments/assets/3d0276ae-d1c4-4e97-b1fb-7786a491a43e" />
+
+
+</td>
+<td>
+
+<img width="1919" height="901" alt="스크린샷 2026-02-12 114119" src="https://github.com/user-attachments/assets/01ae66d4-0c8c-4d88-b976-200f7ed7bd92" />
+
+
+</td>
+</tr>
+</table>
+
+
+
+<hr>
+
+### 🔐회원가입 페이지
+
+- 💊회원가입 기능
+- 💊봄인인증
+<table>
+<tr>
+<td>
+
+<img width="1896" height="911" alt="스크린샷 2026-02-12 114138" src="https://github.com/user-attachments/assets/1100beb3-20b7-45a3-b616-2286b51aaba4" />
+
+
+</td>
+<td>
+
+<img width="1898" height="907" alt="스크린샷 2026-02-12 114243" src="https://github.com/user-attachments/assets/e271fa2c-3b77-4240-8ad2-439f3b74a6af" />
+
+
+</td>
+</tr>
+</table>
 
 
 
 
 <hr>
 
-### ✍️글쓰기 및 등록
-- ✔️파일 첨부
-- ✔️글쓰기
-<img width="300" height="436" alt="스크린샷 2025-11-23 224953" src="https://github.com/user-attachments/assets/47cdda21-c987-404e-ae66-a70247113a7d" />
-<img width="300" height="450" alt="스크린샷 2025-11-23 223352" src="https://github.com/user-attachments/assets/da735dee-6670-439c-9585-a12db13684cf" />
+### 🔎설문 페이지
+
+- 💊컨디션 관련 설문 입력
+- 💊설문 제출
+<table>
+<tr>
+<td>
+
+<img width="1898" height="904" alt="스크린샷 2026-02-12 114505" src="https://github.com/user-attachments/assets/047d3b6c-367d-44ec-9742-aa88b8908501" />
+
+
+</td>
+<td>
+
+
+<img width="1900" height="907" alt="스크린샷 2026-02-12 114547" src="https://github.com/user-attachments/assets/7151eba1-70ee-4617-b94f-030cfbb8b05c" />
+
+</td>
+</tr>
+</table>
 
 
 
 
 <hr>
 
-### 🔎발견(관련 키워드 검색)
-- ✔️발견 기능 UI 작업
-- ✔️글 검색
-- ✔️작가 검색
-<img width="300" height="450" alt="스크린샷 2025-11-22 165542" src="https://github.com/user-attachments/assets/2452a480-3e71-4aa4-baa6-20cddc63d684" />
-<img width="300" height="440" alt="스크린샷 2025-11-22 165613" src="https://github.com/user-attachments/assets/c25f7a2d-c90b-4c6a-97a3-f0f93c6483eb" />
+###🤖AI추천 결과 페이지
+
+- 💊설문 결과 요약
+- 💊추천 영양제 목록
+- 💊AI 채팅
+<table>
+<tr>
+<td>
+
+<img width="1899" height="903" alt="스크린샷 2026-02-12 114606" src="https://github.com/user-attachments/assets/7de4f323-a52e-4c54-872a-9a10b835bd80" />
+
+
+</td>
+<td>
+
+<img width="1893" height="902" alt="스크린샷 2026-02-12 114629" src="https://github.com/user-attachments/assets/b5183653-1f94-4ad0-b018-edf6774937b3" />
+
+</td>
+</tr>
+</table>
 
 
 
 <hr>
 
-### 📄내 서랍 페이지
-- ✔️관심 작가
-- ✔️최근 본 글
-- ✔️관심 글
-- ✔️내 브런치
-<img width="300" height="435" alt="스크린샷 2025-11-23 223013" src="https://github.com/user-attachments/assets/44534eea-70cf-45fc-a91a-77787e79302e" />
-<img width="300" height="450" alt="스크린샷 2025-11-23 223405" src="https://github.com/user-attachments/assets/f9c6d881-44b8-4696-b0bb-70e5bbc35d63" />
+### 🛍️상품 목록 페이지
 
+- 💊상품 목록 조회
+- 💊상품카드 -> 상페 페이지 이동
+<table>
+<tr>
+<td>
+
+<img width="1896" height="911" alt="스크린샷 2026-02-12 114652" src="https://github.com/user-attachments/assets/5b39e1a5-6c14-497f-a781-f6bd0f1f053d" />
+
+
+</td>
+
+<td>
+
+<img width="1892" height="907" alt="스크린샷 2026-02-12 121826" src="https://github.com/user-attachments/assets/f0c87ffc-3f1d-4d1d-b6be-e75fe05d218a" />
+
+
+</td>
+
+</tr>
+</table>
 
 
 
 
 <hr>
 
-### ✏️작가 홈
-- ✔️작가 정보
-- ✔️구독/ 구독 취소
-- ✔️작가의 글 목 목록
-<img width="300" height="445" alt="스크린샷 2025-11-22 170557" src="https://github.com/user-attachments/assets/aa93e422-62b9-4db1-a5ba-d2c9ca98b41f" />
-<img width="300" height="450" alt="스크린샷 2025-11-22 170606" src="https://github.com/user-attachments/assets/762025e5-743e-4d7a-8ae3-5b762da49d01" />
+### 📄상품 상세 페이지
+
+- 💊상품 상세 정보 표시
+<table>
+<tr>
+<td>
+<img width="1896" height="911" alt="스크린샷 2026-02-12 114652" src="https://github.com/user-attachments/assets/da2c11d8-8625-49ae-ada2-870c4f1f7566" />
+
+
+
+</td>
+<td>
+<img width="1898" height="910" alt="스크린샷 2026-02-12 114730" src="https://github.com/user-attachments/assets/c4434571-55cb-48c1-8428-afe612a81f3c" />
+
+
+</td>
+</tr>
+</table>
+
+<hr>
+
+### 💳결제/구독 페이지
+
+- 💊결제 정보 확인
+- 💊구독 결제 처리
+
+<table>
+<tr>
+<td>
+
+<img width="1898" height="904" alt="스크린샷 2026-02-12 114807" src="https://github.com/user-attachments/assets/7c9ae6ae-f3bd-4c12-ab17-537f6a7a6669" />
+
+
+</td>
+<td>
+
+<img width="1888" height="909" alt="스크린샷 2026-02-12 114836" src="https://github.com/user-attachments/assets/27a2ec20-98f7-4333-8502-6ae5e47ec2e9" />
+
+
+</td>
+</tr>
+</table>
+
+<hr>
+
+### 🙋마이 페이지
+
+- 💊사용자 정보
+- 💊구독 상태
+- 💊설문 정보
+
+<table>
+<tr>
+<td>
+<img width="1897" height="905" alt="스크린샷 2026-02-12 114857" src="https://github.com/user-attachments/assets/49697645-633e-4109-8488-3e8bcab79bf8" />
+
+
+</td>
+<td>
+
+<img width="1898" height="909" alt="스크린샷 2026-02-12 114906" src="https://github.com/user-attachments/assets/605710a6-5b7d-482a-8801-f6853c38789d" />
+
+
+</td>
+</tr>
+</table>
 
 <br>
 <br>
@@ -340,12 +490,12 @@
 ## 🛠 트러블 슈팅
 
 
-| 이름👨‍👩‍👧‍👦 | 문제 상황 | 해결 방법 |
-|:--:|:--|:--|
-| **유진** |  | |
-| **승준** |  | |
-| **은재** |  |  |
-| **수정** |  | |
+| 이름👨‍👩‍👧‍👦 | 문제 상황 | 원인 추적 |해결 정리 |
+|:--:|:--|:--|:--|
+| **유진** |  | | |
+| **승준** |  | | |
+| **은재** |  |  | |
+| **수정** |  | | |
 
 
 <br>
